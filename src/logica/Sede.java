@@ -1,4 +1,4 @@
-package consola;
+package logica;
 
 import java.util.Date;
 

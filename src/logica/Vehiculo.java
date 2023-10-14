@@ -1,5 +1,4 @@
-package consola;
-
+package logica;
 
 public class Vehiculo {
 	private int idVehiculo;
