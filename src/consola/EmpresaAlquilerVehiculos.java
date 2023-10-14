@@ -5,12 +5,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-
+import logica.AdministradorLocal;
+import logica.Cliente;
+import logica.Empleado;
+import logica.Sede;
 import logica.UsuarioGenerico;
+import logica.Vehiculo;
 
 public class EmpresaAlquilerVehiculos {
  //private String nombre;
   private ArrayList<UsuarioGenerico> listaUsuarioGenericos = new ArrayList<UsuarioGenerico>();
+  private ArrayList<Cliente> listaClientes;
+  private ArrayList<Sede> listaSedes;
+  private ArrayList<Empleado> listaEmpleados;
+  
+  
+  private ArrayList<Vehiculo> listaVehiculo = new ArrayList<Vehiculo>();
  
  private void ejecutarPrograma() {
 	 
@@ -62,10 +72,34 @@ public class EmpresaAlquilerVehiculos {
  
  public static void main(String[] args) {
 	 EmpresaAlquilerVehiculos programa = new EmpresaAlquilerVehiculos();
+	 ControllerCarga control = new ControllerCarga();
+	 programa.cargaDatos(control);
 	 programa.ejecutarPrograma();
 }
  
- public String input(String mensaje)
+ 
+ 
+ 
+ 
+ 
+ 
+ private void cargaDatos(ControllerCarga control) {
+	  
+	 ArrayList<Cliente> LCliente = control.cargarClientes(null);
+	 ArrayList<Empleado> LEmpleado = control.cargarEmpleados(null);
+	 ArrayList<Vehiculo> LVehiculos = control.cargarVehiculos(null);
+	 ArrayList<AdministradorLocal> LAdmiLocal = control.cargarAdministradorLocal(null);
+	 ArrayList<Sede> LSedes = control.cargarSedes(LEmpleado, LVehiculos, LAdmiLocal, null);
+ 
+ 
+     }
+ 
+ 
+ 
+ 
+ 
+ 
+public String input(String mensaje)
 	{
 		try
 		{
