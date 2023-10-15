@@ -30,7 +30,7 @@ public class EmpresaAlquilerVehiculos {
   private ArrayList<Sede> listaSedes;
   private ArrayList<Empleado> listaEmpleados;
   private ArrayList<CategoriaVehiculo> categoriaVehiculo = new ArrayList<CategoriaVehiculo>();
-  private AdministradorGeneral administradorGeneral= new AdministradorGeneral("", "", "");
+  private AdministradorGeneral administradorGeneral;
   private ArrayList<Vehiculo> listaVehiculo = new ArrayList<Vehiculo>();
   private ArrayList<Reserva> reservas = new ArrayList<Reserva>();
   private void ejecutarPrograma() {
@@ -153,11 +153,13 @@ public class EmpresaAlquilerVehiculos {
 	 ArrayList<Empleado> LEmpleado = control.cargarEmpleados(null);
 	 ArrayList<Vehiculo> LVehiculos = control.cargarVehiculos(null);
 	 ArrayList<AdministradorLocal> LAdmiLocal = control.cargarAdministradorLocal(null);
-	 ArrayList<Sede> LSedes = control.cargarSedes(LEmpleado, LVehiculos, LAdmiLocal, null);
-	 AdministradorGeneral admiGene = control.carga
+	 AdministradorGeneral AdmiGene = control.cargarAdministradorGeneral(null);
+	 ArrayList<Sede> LSedes = control.cargarSedes(LEmpleado, LVehiculos, LAdmiLocal,LAdmiGene, null);
+	 
 	 
 	 this.listaSedes = LSedes;
 	 this.listaClientes  =LCliente;
+	 this.administradorGeneral = AdmiGene;
  
  
      }

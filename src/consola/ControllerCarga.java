@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import logica.AdministradorGeneral;
 import logica.AdministradorLocal;
 import logica.Cliente;
 import logica.Empleado;
@@ -15,9 +16,8 @@ import logica.Vehiculo;
 public class ControllerCarga {
 
 
-	public ArrayList<AdministradorLocal> cargarAdministradorLocal(String archivoAdmiLocal) {
-		
-
+	public ArrayList<AdministradorLocal> cargarAdministradorLocal(String archivoAdmiLocal) 
+    {
 		FileReader archivo;
 		BufferedReader lector;
 		java.util.ArrayList<AdministradorLocal> adminLocal= new java.util.ArrayList<>();
@@ -36,8 +36,6 @@ public class ControllerCarga {
 				String contraseña = partes[3];
 				String tipoUsuario = partes[4];
 				
-				
-				
 				AdministradorLocal Admin= new AdministradorLocal(usuario, contraseña, tipoUsuario, nombre, sede);
 				adminLocal.add(Admin);
 			}       
@@ -51,72 +49,32 @@ public class ControllerCarga {
 			System.out.println("ERROR: hubo un problema leyendo el archivo.");
 			System.out.println(e.getMessage());
 		}
-		return adminLocal;
-		
-		
+		return adminLocal;	
 	}
 	
-	public ArrayList<Sede> cargarSedes(ArrayList<Empleado> lEmpleado, ArrayList<Vehiculo> lVehiculos, ArrayList<AdministradorLocal> lAdmiLocal, String ArchivoSede) 
+	public AdministradorGeneral cargarAdministradorGeneral(String archivoAdministradorGeneral) 
 	{
 		FileReader archivo;
 		BufferedReader lector;
-		java.util.ArrayList<Sede> sedes = new java.util.ArrayList<>();
+	    AdministradorGeneral admiGeneral = null;
 		try
 		{
-			archivo = new FileReader(ArchivoSede);
+			archivo = new FileReader(archivoAdministradorGeneral);
 			lector = new BufferedReader(archivo);
 			String cadena;
-		
+			
+			
 			while((cadena = lector.readLine()) != null)
 			{
 				String[ ] partes = cadena.split(";");
 				String nombre = partes[0];
-				String ubicacion = partes[1];
-				String diasHorasAtencion = partes[2];
+				String usuario = partes[1];
+				String contraseña = partes[2];
+				String tipoUsuario = partes[3];
 				
+			    admiGeneral = new AdministradorGeneral(nombre, usuario, contraseña, tipoUsuario);
 				
-				ArrayList<Empleado> lEmple = new java.util.ArrayList<>();
-				for(int i = lEmpleado.size()-1;i >= 0;i--) 
-				{
-					if(lEmpleado.get(i).getNombre() == nombre)
-					{
-						lEmple.add(lEmpleado.get(i));
-					}
-					
-				}
-				
-				
-				
-				ArrayList<Vehiculo> lVehi = new java.util.ArrayList<>();
-				for(int i = lVehiculos.size()-1;i >= 0;i--) 
-				{
-					if(lVehiculos.get(i).getSede() == nombre)
-					{
-						lVehi.add(lVehiculos.get(i));
-					}
-					
-				}
-				
-				
-				
-				AdministradorLocal Admini = null;
-				for(int i = lAdmiLocal.size()-1;i >= 0;i--) 
-				{
-					if(lAdmiLocal.get(i).getSede() == nombre)
-					{
-						Admini = lAdmiLocal.get(i);
-					}
-					
-				}
-				
-				
-			
-				Sede sed = new Sede(nombre, ubicacion,diasHorasAtencion, lVehi, lEmple, Admini);
-				sedes.add(sed);
-			}
-			
-		    
-		    
+			} 
 		}
 		catch (FileNotFoundException e)
 		{
@@ -127,19 +85,12 @@ public class ControllerCarga {
 			System.out.println("ERROR: hubo un problema leyendo el archivo.");
 			System.out.println(e.getMessage());
 		}
-		return sedes;
 		
-		
+		return admiGeneral;
 	}
 	
-	
-	
-	
-	
-	
-	
-	public ArrayList<Cliente> cargarClientes(String archivoClientes) {
-		
+	public ArrayList<Cliente> cargarClientes(String archivoClientes) 
+    {
 		FileReader archivo;
 		BufferedReader lector;
 		java.util.ArrayList<Cliente> clientes = new java.util.ArrayList<>();
@@ -163,9 +114,6 @@ public class ControllerCarga {
 				Cliente perCliente = new Cliente(nombre, nacionalidad, telefono, fechaNacimiento, usuario, contraseña, tipoUsuario);
 				clientes.add(perCliente);
 			}
-			
-		    
-		    
 		}
 		catch (FileNotFoundException e)
 		{
@@ -177,10 +125,10 @@ public class ControllerCarga {
 			System.out.println(e.getMessage());
 		}
 		return clientes;
-		
 	}
 
-	public ArrayList<Empleado> cargarEmpleados(String archivoEmpleados) {
+	public ArrayList<Empleado> cargarEmpleados(String archivoEmpleados)
+    {
 		FileReader archivo;
 		BufferedReader lector;
 		java.util.ArrayList<Empleado> empleados = new java.util.ArrayList<>();
@@ -213,7 +161,6 @@ public class ControllerCarga {
 			System.out.println(e.getMessage());
 		}
 		return empleados;
-		
 	}
 	
 	public ArrayList<Vehiculo> cargarVehiculos(String archivoVehiculos) 
@@ -230,9 +177,6 @@ public class ControllerCarga {
 			while((cadena = lector.readLine()) != null)
 			{
 				String[ ] partes = cadena.split(";");
-				
-
-				
 				int idVehiculo = Integer.parseInt(partes[0]);
 				boolean alquilado = Boolean.parseBoolean(partes[1]);
 				String sedeActual = partes[2];
@@ -255,13 +199,86 @@ public class ControllerCarga {
 			System.out.println("ERROR: hubo un problema leyendo el archivo.");
 			System.out.println(e.getMessage());
 		}
-		return Vehiculos;
+		return Vehiculos;	
+	}
+	
+    public ArrayList<Sede> cargarSedes(ArrayList<Empleado> lEmpleado, ArrayList<Vehiculo> lVehiculos, ArrayList<AdministradorLocal> lAdmiLocal,ArrayList<AdministradorGeneral> lAdmiGeneral, String ArchivoSede) 
+	{
+		FileReader archivo;
+		BufferedReader lector;
+		java.util.ArrayList<Sede> sedes = new java.util.ArrayList<>();
+		try
+		{
+			archivo = new FileReader(ArchivoSede);
+			lector = new BufferedReader(archivo);
+			String cadena;
+		
+			while((cadena = lector.readLine()) != null)
+			{
+				String[ ] partes = cadena.split(";");
+				String nombre = partes[0];
+				String ubicacion = partes[1];
+				String diasHorasAtencion = partes[2];
+				
+				
+				ArrayList<Empleado> lEmple = new java.util.ArrayList<>();
+				for(int i = lEmpleado.size()-1;i >= 0;i--) 
+				{
+					if(lEmpleado.get(i).getNombre() == nombre)
+					{
+						lEmple.add(lEmpleado.get(i));
+					}
+					
+				}
+				
+				
+				ArrayList<Vehiculo> lVehi = new java.util.ArrayList<>();
+				for(int i = lVehiculos.size()-1;i >= 0;i--) 
+				{
+					if(lVehiculos.get(i).getSede() == nombre)
+					{
+						lVehi.add(lVehiculos.get(i));
+					}
+					
+				}
+				
+				
+				AdministradorLocal AdminiLocal = null;
+				for(int i = lAdmiLocal.size()-1;i >= 0;i--) 
+				{
+					if(lAdmiLocal.get(i).getSede() == nombre)
+					{
+						AdminiLocal = lAdmiLocal.get(i);
+					}
+				}
+				
+				
+
+			
+				Sede sed = new Sede(nombre, ubicacion,diasHorasAtencion, lVehi, lEmple, AdminiLocal);
+				sedes.add(sed);
+			}
+			
+		    
+		    
+		}
+		catch (FileNotFoundException e)
+		{
+			System.out.println("ERROR: el archivo indicado no se encontró.");
+		}
+		catch (IOException e)
+		{
+			System.out.println("ERROR: hubo un problema leyendo el archivo.");
+			System.out.println(e.getMessage());
+		}
+		return sedes;
 		
 		
 	}
+
+    
+
+
 	
 	
-	
-	
-	public void cargarAdministradores() {}
 }
