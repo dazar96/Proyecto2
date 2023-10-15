@@ -11,5 +11,9 @@ public class AdministradorLocal extends UsuarioGenerico {
 		this.sede = sede;
 	}
 	
- public void entregaVehiculo() { }
+ public void entregaVehiculo() { 
+	 
+ }
+ 
+  
 }

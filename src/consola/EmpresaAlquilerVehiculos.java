@@ -9,9 +9,11 @@ import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import logica.AdministradorGeneral;
 import logica.AdministradorLocal;
 import logica.Cliente;
 import logica.Empleado;
+import logica.Reserva;
 import logica.Sede;
 import logica.CategoriaVehiculo;
 import logica.Cliente;
@@ -28,9 +30,9 @@ public class EmpresaAlquilerVehiculos {
   private ArrayList<Sede> listaSedes;
   private ArrayList<Empleado> listaEmpleados;
   private ArrayList<CategoriaVehiculo> categoriaVehiculo = new ArrayList<CategoriaVehiculo>();
-  
+  private AdministradorGeneral administradorGeneral= new AdministradorGeneral("", "", "");
   private ArrayList<Vehiculo> listaVehiculo = new ArrayList<Vehiculo>();
-
+  private ArrayList<Reserva> reservas = new ArrayList<Reserva>();
   private void ejecutarPrograma() {
 	 
 ;	 System.out.println("Bienvenido a la empresa");
@@ -56,7 +58,6 @@ public class EmpresaAlquilerVehiculos {
 			for (Cliente cliente : listaClientes) {
 				if(cliente.getUsuario().equals(usuario)&& cliente.getContraseña().equals(contrasenia)) 
 					clienteLogin = cliente;
-					cliente.crearReserva();
 					break;
 				
 			}
@@ -91,20 +92,39 @@ public class EmpresaAlquilerVehiculos {
 		 try {
 		Vehiculo vehiculo = controllerEmpresa.ReservaVehiculo(categoria, categoriaVehiculo, nombreSede, fechaI, fechaF, listaSedes);
 		String sedeDevolver = input("Ingrese la sede que desea devolverlo");
-		String conductorAdicional = input("Desea agregar otro conductor Si(1) No(0) ");
-		boolean aditional = false;
-		if(conductorAdicional.equals("1"))
-			aditional=true;
-		controllerEmpresa.crearReservaCliente(clienteLogin,vehiculo,listaSedes,sedeDevolver,aditional);
+		String conductorAdicional = input("Desea agregar otro conductor Si(1) No(0)");
+		String seguro = input("¿Desea agregar algun seguro? Si(1) No(0)");
+		boolean conSeguro= seguro.equals("1");
+		boolean aditional = conductorAdicional.equals("1");
+		
+		double valorSinSeguro= controllerEmpresa.ValorReservaSinSeguro(vehiculo,listaSedes,sedeDevolver,aditional);
+		reservas.add(controllerEmpresa.CrearReservaCliente(clienteLogin,valorSinSeguro,administradorGeneral,conSeguro, vehiculo,nombreSede,sedeDevolver));
+		System.out.println("Creando la reserva... ");
+		Thread.sleep(100);
+		System.out.println("Se hizo el cobro a la tarjeta del 30% del valor de la tarjeta");
+		System.out.println("Cuando recoga el vehiculo se hara el cobro restante");
+		
 		 } catch (ParseException e) {
 			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+		 
+	 } else if(option==2) {
+		 Reserva reservaClienteLogin=null;
+		 for (Reserva reservasCliente : reservas) {
+			if(clienteLogin.getNombre().equals(reservasCliente.getIdentificador())) 
+				reservaClienteLogin = reservasCliente;
+			
+		} if(reservaClienteLogin==null) {
+			System.out.println("No tiene reservas registradas");}
 		 
 	 }
 	 }
  private void MenuCliente() {
 	 System.out.println("1.Reservar vehiculo");
-	 System.out.println("2.Devolver vehiculo");
+	 System.out.println("2. Recoger vehiculo ");
+	 System.out.println("3.Devolver vehiculo");
 	 
  }
 	 

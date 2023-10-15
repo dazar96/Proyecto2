@@ -10,4 +10,5 @@ public class Empleado  extends UsuarioGenerico{
 		this.nombre = nombre;
 		this.sede = sede;
 	}
+	
 }

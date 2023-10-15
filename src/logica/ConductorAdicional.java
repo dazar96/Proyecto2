@@ -3,9 +3,10 @@ package logica;
 public class ConductorAdicional extends Cliente {
 
 	
-	 public ConductorAdicional(String usuario, String contraseña, String tipoUsuario) {
-		super(usuario, contraseña, tipoUsuario);
-		// TODO Auto-generated constructor stub
-	}
+	 private static int telefono;
+
+	public ConductorAdicional(String usuario, String contraseña, String tipoUsuario) {
+		super(usuario, contraseña,telefono, tipoUsuario, tipoUsuario, tipoUsuario, tipoUsuario );
+	}//Toca modificar esto 
 	
 }

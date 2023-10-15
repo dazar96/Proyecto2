@@ -10,7 +10,7 @@ public  class Cliente extends UsuarioGenerico {
  public int telefono;
  public String fechaNac;
  protected LicienciaConducion licienciaConducion;
- protected MedioDePago medioDePago;
+ private  MedioDePago medioDePago;
  protected  ArrayList<Reserva>  reservas;
  
  public Cliente(String nombre, String nacionalidad, int telefono, String fechaNacimiento,String usuario, String contraseña, String tipoUsuario)
@@ -20,14 +20,25 @@ public  class Cliente extends UsuarioGenerico {
 		this.nombre = nacionalidad;
 		this.telefono = telefono;
 		this.fechaNac = fechaNacimiento;
+		
+		
+		
 	}
-  public void crearReserva() {
-	  Reserva reserva = new Reserva();	  
+ 
+ 
+  public String getNombre() {
+	return nombre;
+}
+
+
+public Reserva crearReserva(String categoriaVehiculo,Date fechaInicio,Date FechaFinal,double precio30 ,double precioRestante,String sedeDevolver,String sedeRecoger) {
+	  Reserva reserva = new Reserva(nombre,categoriaVehiculo,fechaInicio,FechaFinal,precio30,precioRestante,precio30+precioRestante,medioDePago.getNumeroTarjeta(),sedeRecoger,sedeDevolver);	  
 	  reservas = new ArrayList<Reserva>();
-	  reservas.add(reserva);
+	  reservas.add(reserva); 
+	  return reserva;
   }
  public  ArrayList<Reserva> getReservas() {
 	return reservas;
 }
-  
+
 }
