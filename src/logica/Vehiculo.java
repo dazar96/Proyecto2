@@ -42,6 +42,11 @@ public class Vehiculo {
 		this.fechaFinal = fechaFinal;
 	}
 	
+	public String getSede()
+    {
+    	return sedeActual;
+    }
+	
 	//Constructor Mateo
 	public Vehiculo(int idVehiculo, boolean alquilado,String sedeActual,int capacidad, String placa, String modelo, String color, String tipoTransmision )
 	{

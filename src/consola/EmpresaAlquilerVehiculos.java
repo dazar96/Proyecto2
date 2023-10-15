@@ -134,6 +134,10 @@ public class EmpresaAlquilerVehiculos {
 	 ArrayList<Vehiculo> LVehiculos = control.cargarVehiculos(null);
 	 ArrayList<AdministradorLocal> LAdmiLocal = control.cargarAdministradorLocal(null);
 	 ArrayList<Sede> LSedes = control.cargarSedes(LEmpleado, LVehiculos, LAdmiLocal, null);
+	 AdministradorGeneral admiGene = control.carga
+	 
+	 this.listaSedes = LSedes;
+	 this.listaClientes  =LCliente;
  
  
      }
