@@ -17,9 +17,7 @@ import logica.CategoriaVehiculo;
 import logica.Cliente;
 import logica.ControladorReserva;
 import logica.AdministradorLocal;
-import logica.Cliente;
-import logica.Empleado;
-import logica.Sede;
+
 import logica.UsuarioGenerico;
 import logica.Vehiculo;
 
