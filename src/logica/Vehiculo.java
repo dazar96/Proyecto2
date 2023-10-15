@@ -5,6 +5,8 @@ import java.util.Date;
 public class Vehiculo {
 	private int idVehiculo;
 	private Sede Actual;
+	private boolean alquilado; //merge aca
+	private String sedeActual; //merge aca
 	private int capacidad;
 	private String placa;
 	private String modelo;
@@ -18,7 +20,7 @@ public class Vehiculo {
 	public Vehiculo() {
 		fechaFinal=null;
 		fechaInicio= null;
-	}
+	}//Constructor Mio
 	
 	
 	
@@ -40,6 +42,18 @@ public class Vehiculo {
 		this.fechaFinal = fechaFinal;
 	}
 	
+	//Constructor Mateo
+	public Vehiculo(int idVehiculo, boolean alquilado,String sedeActual,int capacidad, String placa, String modelo, String color, String tipoTransmision )
+	{
+		this.idVehiculo = idVehiculo;
+		this.alquilado = alquilado;
+		this.sedeActual = sedeActual;
+		this.capacidad = capacidad;
+		this.placa = placa;
+		this.modelo = modelo;
+		this.color = color;
+		this.tipoTransmision = tipoTransmision;
+	}
 	
 	
 	

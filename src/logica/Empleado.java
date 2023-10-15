@@ -7,6 +7,7 @@ public class Empleado  extends UsuarioGenerico{
 	
 	public Empleado(String usuario, String contraseña, String tipoUsuario) {
 		super(usuario, contraseña, tipoUsuario);
-		// TODO Auto-generated constructor stub
+		this.nombre = nombre;
+		this.sede = sede;
 	}
 }

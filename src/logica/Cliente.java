@@ -5,17 +5,21 @@ import java.util.Date;
 import logica.Reserva;
 public  class Cliente extends UsuarioGenerico {
  
-protected String nombre;
- protected String nacionalidad;
- protected int telefono;
- protected Date fechaNac;
+ public String nombre;
+ public String nacionalidad;
+ public int telefono;
+ public String fechaNac;
  protected LicienciaConducion licienciaConducion;
  protected MedioDePago medioDePago;
  protected  ArrayList<Reserva>  reservas;
  
- public Cliente(String usuario, String contraseña, String tipoUsuario) {
-		super(usuario, contraseña, tipoUsuario);
-		// TODO Auto-generated constructor stub
+ public Cliente(String nombre, String nacionalidad, int telefono, String fechaNacimiento,String usuario, String contraseña, String tipoUsuario)
+	{
+	  super(usuario, contraseña, tipoUsuario);//Le agregue aca estos 3
+		this.nombre = nombre;
+		this.nombre = nacionalidad;
+		this.telefono = telefono;
+		this.fechaNac = fechaNacimiento;
 	}
   public void crearReserva() {
 	  Reserva reserva = new Reserva();	  
