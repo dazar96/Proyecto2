@@ -60,10 +60,10 @@ public class ControllerCarga {
 	{
 		FileReader archivo;
 		BufferedReader lector;
-		java.util.ArrayList<Cliente> clientes = new java.util.ArrayList<>();
+		java.util.ArrayList<Sede> sedes = new java.util.ArrayList<>();
 		try
 		{
-			archivo = new FileReader(archivoClientes);
+			archivo = new FileReader(ArchivoSede);
 			lector = new BufferedReader(archivo);
 			String cadena;
 		
@@ -71,12 +71,48 @@ public class ControllerCarga {
 			{
 				String[ ] partes = cadena.split(";");
 				String nombre = partes[0];
-				String nacionalidad = partes[1];
-				int telefono = Integer.parseInt(partes[2]);
-				String fechaNacimiento = partes[3];
+				String ubicacion = partes[1];
+				String diasHorasAtencion = partes[2];
 				
-				Cliente perCliente = new Cliente(nombre, nacionalidad, telefono, fechaNacimiento);
-				clientes.add(perCliente);
+				
+				ArrayList<Empleado> lEmple = new java.util.ArrayList<>();
+				for(int i = lEmpleado.size()-1;i >= 0;i--) 
+				{
+					if(lEmpleado.get(i).getNombre() == nombre)
+					{
+						lEmple.add(lEmpleado.get(i));
+					}
+					
+				}
+				
+				
+				
+				ArrayList<Vehiculo> lVehi = new java.util.ArrayList<>();
+				for(int i = lVehiculos.size()-1;i >= 0;i--) 
+				{
+					if(lVehiculos.get(i).getSede() == nombre)
+					{
+						lVehi.add(lVehiculos.get(i));
+					}
+					
+				}
+				
+				
+				
+				AdministradorLocal Admini = null;
+				for(int i = lAdmiLocal.size()-1;i >= 0;i--) 
+				{
+					if(lAdmiLocal.get(i).getSede() == nombre)
+					{
+						Admini = lAdmiLocal.get(i);
+					}
+					
+				}
+				
+				
+			
+				Sede sed = new Sede(nombre, ubicacion,diasHorasAtencion, lVehi, lEmple, Admini);
+				sedes.add(sed);
 			}
 			
 		    
@@ -91,7 +127,7 @@ public class ControllerCarga {
 			System.out.println("ERROR: hubo un problema leyendo el archivo.");
 			System.out.println(e.getMessage());
 		}
-		return clientes;
+		return sedes;
 		
 		
 	}
@@ -120,8 +156,11 @@ public class ControllerCarga {
 				String nacionalidad = partes[1];
 				int telefono = Integer.parseInt(partes[2]);
 				String fechaNacimiento = partes[3];
+				String usuario = partes[4];
+				String contraseña = partes[5];
+				String tipoUsuario = partes[6];
 				
-				Cliente perCliente = new Cliente(nombre, nacionalidad, telefono, fechaNacimiento);
+				Cliente perCliente = new Cliente(nombre, nacionalidad, telefono, fechaNacimiento, usuario, contraseña, tipoUsuario);
 				clientes.add(perCliente);
 			}
 			
