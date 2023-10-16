@@ -20,6 +20,7 @@ public  class Cliente extends UsuarioGenerico {
 		this.nombre = nacionalidad;
 		this.telefono = telefono;
 		this.fechaNac = fechaNacimiento;
+		this.reservas = new java.util.ArrayList<>();
 		
 		
 		
@@ -28,17 +29,18 @@ public  class Cliente extends UsuarioGenerico {
  
   public String getNombre() {
 	return nombre;
-}
+  }
 
 
-public Reserva crearReserva(String categoriaVehiculo,Date fechaInicio,Date FechaFinal,double precio30 ,double precioRestante,String sedeDevolver,String sedeRecoger) {
+  public Reserva crearReserva(String categoriaVehiculo,Date fechaInicio,Date FechaFinal,double precio30 ,double precioRestante,String sedeDevolver,String sedeRecoger) {
 	  Reserva reserva = new Reserva(nombre,categoriaVehiculo,fechaInicio,FechaFinal,precio30,precioRestante,precio30+precioRestante,medioDePago.getNumeroTarjeta(),sedeRecoger,sedeDevolver);	  
-	  reservas = new ArrayList<Reserva>();
+	  
 	  reservas.add(reserva); 
 	  return reserva;
   }
- public  ArrayList<Reserva> getReservas() {
+  
+  public  ArrayList<Reserva> getReservas() {
 	return reservas;
-}
+  }
 
 }

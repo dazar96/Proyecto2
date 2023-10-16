@@ -38,7 +38,12 @@ public class Sede {
 		return nombre;
 	}
 	
+	public String getUbicacion() {
+		return ubicacion;
+	}
 	
-
+	public String getDiasHorasAtencion() {
+		return diasHorasAtencion;
+	}
 	
 }

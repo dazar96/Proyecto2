@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import logica.AdministradorGeneral;
 import logica.AdministradorLocal;
+import logica.CategoriaVehiculo;
 import logica.Cliente;
 import logica.Empleado;
 import logica.Sede;
@@ -185,8 +186,30 @@ public class ControllerCarga {
 				String modelo = partes[5];
 				String color = partes[6];
 				String tipoTransmision = partes[7];
+				int categoria = Integer.parseInt(partes[8]);
 				
-				Vehiculo Vehi = new Vehiculo(idVehiculo, alquilado, sedeActual, capacidad, placa, modelo, color, tipoTransmision);
+				
+				int valorCate = 0;
+				String nombreCate = null;
+				
+				if(categoria == 1)
+				{
+					valorCate = 50000;
+					nombreCate = "Categoria #1";
+				}else if(categoria == 2){
+					valorCate = 75000;
+					nombreCate = "Categoria #2";
+				}else if(categoria == 3){
+					valorCate = 100000;
+					nombreCate = "Categoria #3";
+				}else if(categoria == 4){
+					valorCate = 200000;
+					nombreCate = "Categoria #4";
+				}
+				
+				CategoriaVehiculo cate = new CategoriaVehiculo(nombreCate, categoria, valorCate );
+				
+				Vehiculo Vehi = new Vehiculo(idVehiculo, alquilado, sedeActual, capacidad, placa, modelo, color, tipoTransmision,cate);
 				Vehiculos.add(Vehi);
 			} 
 		}
@@ -275,10 +298,5 @@ public class ControllerCarga {
 		
 		
 	}
-
-    
-
-
-	
 	
 }
