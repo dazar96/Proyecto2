@@ -119,6 +119,7 @@ public class ControllerCarga {
 				String fechaVencimientoLicencia = partes[9];
 				
 				LicienciaConducion licencia = new LicienciaConducion(numeroLicencia,paisExpedicion, fechaVencimientoLicencia);
+				
 				Cliente perCliente = new Cliente(nombre, nacionalidad, telefono, fechaNacimiento, usuario, contraseña, tipoUsuario,null,licencia);
 				clientes.add(perCliente);
 			}
@@ -135,6 +136,7 @@ public class ControllerCarga {
 		return clientes;
 	}
 
+	
 	public ArrayList<Empleado> cargarEmpleados(String archivoEmpleados)
     {
 		FileReader archivo;
