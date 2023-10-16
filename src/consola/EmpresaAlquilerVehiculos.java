@@ -34,6 +34,7 @@ public class EmpresaAlquilerVehiculos {
   private ArrayList<CategoriaVehiculo> categoriaVehiculo;
   private AdministradorGeneral administradorGeneral;
   private ArrayList<Vehiculo> listaVehiculo ;
+  private ArrayList<AdministradorLocal> listaAdministradorLocals;
   private ArrayList<Reserva> reservas = new ArrayList<Reserva>();
   private ArrayList<Seguro> seguros = new ArrayList<Seguro>();
   public static Integer numeroReservaInteger = 0 ;
@@ -84,7 +85,7 @@ public class EmpresaAlquilerVehiculos {
 					break;
 			}programaEmpleado(empleadoLogin);
 		} else if (tipoUsuario.equalsIgnoreCase("Administrador General")) {
-			
+			programaAdministradorGeneral(administradorGeneral);
 		}
 		
 	}
@@ -236,23 +237,54 @@ public class EmpresaAlquilerVehiculos {
 
  private void programaAdministradorGeneral (AdministradorGeneral administradorGeneral) {
 	menuAdministradorGeneral();
-	String nombreSedeString = input("Ingrese el nombre de la sede donde se registrara el coche");
-	String modelo =input("Ingrese el modelo del vehiculo");
-	int capacidad = Integer.parseInt( input("Ingrese la capacidad del vehiculo"));
-	String placa = input("Ingrese la placa del carro");
-	String color = input("Ingrese el color del vehiculo");
-	String tipoTransmision = input("Tipo de transmision");
-	String categoriaVehiculo = input("Categoria del vehiculo");
-	Sede sede = controllerEmpresa.buscarSedePorNombre(nombreSedeString, listaSedes);
-	for (CategoriaVehiculo categoriaVehiculo2 : this.categoriaVehiculo) {
-		
+	int option = Integer.parseInt(input("Ingrese la opcion que desea"));
+	if(option==1) {
+		modificarVehiculoAdministradorGeneral();
+	}else if(option==2) {
+		darDeBajaVehiculoAdmin();
 	}
-	Vehiculo vehiculo = new Vehiculo(0, false, sede,nombreSedeString, capacidad, placa,
-			                         modelo, color, tipoTransmision, null, null,
-			                         null, false, false);
-	// Faltan cosas
+	
+ }
+ private void darDeBajaVehiculoAdmin(){
+	 
+	 int idVehiculo =Integer.parseInt(input("Id del vehiculo"));
+	 Vehiculo vehiculoDeBajaVehiculo=null;
+	 
+	 for (Vehiculo vehiculo : listaVehiculo) {
+		if(idVehiculo==(vehiculo.getIdVehiculo())) {
+			vehiculoDeBajaVehiculo = vehiculo;
+		}
+	}
+	administradorGeneral.darDeBajaVehiculo(listaVehiculo, vehiculoDeBajaVehiculo, vehiculoDeBajaVehiculo.getSedeActual());
+	System.out.println("Vehiculo dado de baja");
  }
  
+ 
+ private void modificarVehiculoAdministradorGeneral() {
+	 
+	 	String nombreSedeString = input("Ingrese el nombre de la sede donde se registrara el coche");
+		String modelo =input("Ingrese el modelo del vehiculo");
+		int capacidad = Integer.parseInt( input("Ingrese la capacidad del vehiculo"));
+		String placa = input("Ingrese la placa del carro");
+		String color = input("Ingrese el color del vehiculo");
+		String tipoTransmision = input("Tipo de transmision");
+		String categoriaVehiculo = input("Categoria del vehiculo");
+		
+		Sede sede = controllerEmpresa.buscarSedePorNombre(nombreSedeString, listaSedes);
+		CategoriaVehiculo categoria =null;
+		
+		for (CategoriaVehiculo categoriaVehiculo2 : this.categoriaVehiculo) {
+			if(categoriaVehiculo.equals(categoriaVehiculo2.getNombreCategoria())) {
+				categoria = categoriaVehiculo2;
+			}
+		}
+		Vehiculo vehiculo = new Vehiculo(0, false, sede,nombreSedeString, capacidad, placa,
+				                         modelo, color, tipoTransmision, categoria, null,
+				                         null, false, false);
+		
+		administradorGeneral.registrarCompraVehiculo(vehiculo, sede,listaVehiculo);
+		System.out.println("Vehiculo registrado en el sistema");
+ }
 
  
  private void programaEmpleado(Empleado empleadoLogin) throws ParseException {
@@ -319,13 +351,13 @@ public class EmpresaAlquilerVehiculos {
  private void cargaDatos(ControllerCarga control) {
 	  
 	 listaClientes = control.cargarClientes("./data/clientes.txt\\");
-	 ArrayList<Empleado> LEmpleado = control.cargarEmpleados("./data/empleados.txt\\");
+	 listaEmpleados = control.cargarEmpleados("./data/empleados.txt\\");
 	 categoriaVehiculo = control.cargarCategoria("./data/tarifas.txt\\\\");
 	 listaVehiculo = control.cargarVehiculos(categoriaVehiculo,"./data/vehiculos.txt\\");
-	 ArrayList<AdministradorLocal> LAdmiLocal = control.cargarAdministradorLocal("./data/administradorLocal.txt\\");
+	 listaAdministradorLocals = control.cargarAdministradorLocal("./data/administradorLocal.txt\\");
 	 administradorGeneral = control.cargarAdministradorGeneral("./data/administradorGeneral.txt\\");
-	 listaSedes = control.cargarSedes(LEmpleado, listaVehiculo, LAdmiLocal, "./data/sedes.txt\\");
-	 listaUsuarioGenericos = control.cargaUsuarios(LEmpleado, listaClientes, LAdmiLocal, administradorGeneral);
+	 listaSedes = control.cargarSedes(listaEmpleados, listaVehiculo, listaAdministradorLocals, "./data/sedes.txt\\");
+	 listaUsuarioGenericos = control.cargaUsuarios(listaEmpleados, listaClientes, listaAdministradorLocals, administradorGeneral);
      }
  
  

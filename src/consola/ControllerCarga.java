@@ -233,7 +233,7 @@ public class ControllerCarga {
 				ArrayList<Empleado> lEmple = new java.util.ArrayList<>();
 				for(int i = lEmpleado.size()-1;i >= 0;i--) 
 				{
-					if(lEmpleado.get(i).getNombre() == nombre)
+					if(lEmpleado.get(i).getSede().equals(nombre) )
 					{
 						lEmple.add(lEmpleado.get(i));
 					}
@@ -244,7 +244,7 @@ public class ControllerCarga {
 				ArrayList<Vehiculo> lVehi = new java.util.ArrayList<>();
 				for(int i = lVehiculos.size()-1;i >= 0;i--) 
 				{
-					if(lVehiculos.get(i).getSede() == nombre)
+					if(lVehiculos.get(i).getSede().equals(nombre))
 					{
 						lVehi.add(lVehiculos.get(i));
 					}
@@ -255,7 +255,7 @@ public class ControllerCarga {
 				AdministradorLocal AdminiLocal = null;
 				for(int i = lAdmiLocal.size()-1;i >= 0;i--) 
 				{
-					if(lAdmiLocal.get(i).getSede() == nombre)
+					if(lAdmiLocal.get(i).getSede() .equals(nombre))
 					{
 						AdminiLocal = lAdmiLocal.get(i);
 					}
@@ -265,6 +265,11 @@ public class ControllerCarga {
 
 			
 				Sede sed = new Sede(nombre, ubicacion,diasHorasAtencion, lVehi, lEmple, AdminiLocal);
+				for (Vehiculo vehiculo : lVehiculos) {
+					 if(vehiculo.getSede().equals(nombre)) {
+						 vehiculo.setSedeActual(sed);
+					 }
+				}
 				sedes.add(sed);
 			}
 			
@@ -322,7 +327,7 @@ public class ControllerCarga {
 		return vcArrayList;
 	}
     
- public ArrayList<UsuarioGenerico> cargaUsuarios(ArrayList<Empleado> LEmpleado,ArrayList<Cliente> listaClientes,ArrayList<AdministradorLocal> lAdmiLocal,AdministradorGeneral LAdmiGene) {
+    public ArrayList<UsuarioGenerico> cargaUsuarios(ArrayList<Empleado> LEmpleado,ArrayList<Cliente> listaClientes,ArrayList<AdministradorLocal> lAdmiLocal,AdministradorGeneral LAdmiGene) {
 
         ArrayList<UsuarioGenerico> listaUsuario = new java.util.ArrayList<>();
 

@@ -45,8 +45,15 @@ public class Vehiculo {
 	
 	//Getters and Setters
 	
+	
+	
 	public CategoriaVehiculo getCategoria() {
 		return categoria;}
+
+	public int getIdVehiculo() {
+		return idVehiculo;
+	}
+
 
 	public Date getFechaInicio() {
 		return fechaInicio;
@@ -73,10 +80,7 @@ public class Vehiculo {
     {
     	return sedeInicial;
     }	
-	public int getidVehiculo() {
-		return idVehiculo;
-	}
-	
+
 	public boolean getAlquilado() {
 		return alquilado;
 	}
@@ -106,6 +110,9 @@ public class Vehiculo {
 	}
 	public void setFuncional(boolean funcional) {
 		this.funcional = funcional;
+	}
+	public void setSedeActual(Sede sedeActual) {
+		this.sedeActual = sedeActual;
 	}
 	
 	

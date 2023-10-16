@@ -19,6 +19,10 @@ public class Empleado  extends UsuarioGenerico{
 		return nombre;
 	}
 	
+	public String getSede() {
+		return sede;
+	}
+	
 	public void administarRecogidaCliente(Reserva reserva) {
 		reserva.setVehiculoRecogido(true);
 	}

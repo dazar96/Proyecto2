@@ -10,9 +10,10 @@ public class AdministradorGeneral extends UsuarioGenerico {
 	super(usuario, contraseña, tipoUsuario);
 	this.nombre = nombre;
 	}
-	//Agregar vehiculo al inventario
-public void modificarInventario(Vehiculo vehiculo) {
 	
+public void darDeBajaVehiculo(ArrayList<Vehiculo> vehiculos,Vehiculo vehiculo,Sede sede) {
+	vehiculos.remove(vehiculo);
+	sede.getInventarioVehiculos().remove(vehiculo);
  }
  public double administrarSeguro (ArrayList<Seguro> seguros,ArrayList<Integer> posiciones,boolean conSeguro,Vehiculo vehiculo) {
 
@@ -38,7 +39,8 @@ public void modificarInventario(Vehiculo vehiculo) {
  }
  
  
- public void registrarCompraVehiculo() {
-	 
+ public void registrarCompraVehiculo(Vehiculo vehiculo,Sede sede,ArrayList<Vehiculo> vehiculos) {
+	 vehiculos.add(vehiculo);
+	 sede.getInventarioVehiculos().add(vehiculo);
  }
 }
