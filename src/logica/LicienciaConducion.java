@@ -3,11 +3,11 @@ package logica;
 import java.util.Date;
 
 public class LicienciaConducion {
- private String number;
+ private int number;
  private String paisExpedicion;
- private String fechaVencimiento;
+ private Date fechaVencimiento;
 
- public LicienciaConducion(String numeroLicencia, String paisExpedicion, String fechaVencimientoLicencia) {
+ public LicienciaConducion(int numeroLicencia, String paisExpedicion, Date fechaVencimientoLicencia) {
 	
 	this.number = numeroLicencia;
 	this.paisExpedicion = paisExpedicion;

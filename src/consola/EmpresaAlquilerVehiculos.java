@@ -14,6 +14,7 @@ import logica.AdministradorGeneral;
 import logica.AdministradorLocal;
 import logica.Cliente;
 import logica.Empleado;
+import logica.LicienciaConducion;
 import logica.Reserva;
 import logica.Sede;
 import logica.CategoriaVehiculo;
@@ -417,7 +418,7 @@ private String login(String usuario,String contrasenia) {
  }
  
  
- private void programaAdministradorLocal(AdministradorLocal administradorLocalLogin) {
+ private void programaAdministradorLocal(AdministradorLocal administradorLocalLogin) throws ParseException {
 	menuAdministradorLocal();
 	int option = Integer.parseInt(input("Ingrese la opcion que desea"));
 	if(option==1) {
@@ -476,7 +477,7 @@ private void agregarEmpleado() {
 	   System.out.println("Empleado Agregado exitosamente \n");
 }
 
-private void crearUsuario() {
+private void crearUsuario() throws ParseException {
 	 
 	   System.out.println("\n*******CREACION DE USUARIO****************\n");
 	   System.out.println("Por favor llene el formulario: \n");
@@ -488,8 +489,15 @@ private void crearUsuario() {
 	   String usuario = input("Digite el nombre de usuario: ");
 	   String contraseña = input("Digite su contraseña ¡NO OLVIDAR!: ");
 	   
+	   int numeroLicencia = Integer.parseInt(input("Ingrese el numero de Licencia:"));
+	   String paisExpe = input("Ingrese pais de expedición: ");
+	   String Fecvenci = input("Fecha de venciomiento del documento: ");
 	   
-	   Cliente cliente = new Cliente(nombre, nacionalidad, telefono, fechaNac,usuario, contraseña, "Cliente", null);
+	   SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+       Date fechau =format.parse(Fecvenci);
+	   
+	   LicienciaConducion Lice = new LicienciaConducion(numeroLicencia, paisExpe, fechau );
+	   Cliente cliente = new Cliente(nombre, nacionalidad, telefono, fechaNac,usuario, contraseña, "Cliente", null, Lice);
 	   listaClientes.add(cliente);
 	   
 	   System.out.println("Cliente Agregado Exitosamente \n");
@@ -534,7 +542,7 @@ private Cliente buscarClienteSistema(String nombreCliente,ArrayList<Cliente> cli
 		}
 	} return null;
  }
- private void cargaDatos(ControllerCarga control) {
+ private void cargaDatos(ControllerCarga control) throws ParseException {
 	  
 	 listaClientes = control.cargarClientes("./data/clientes.txt\\");
 	 listaEmpleados = control.cargarEmpleados("./data/empleados.txt\\");

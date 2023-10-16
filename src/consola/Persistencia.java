@@ -17,7 +17,7 @@ import logica.LicienciaConducion;
 
 public class Persistencia {
 
-	public ArrayList<Cliente> cargarClientesAgregadosNuevos(String archivoClientes) 
+	public ArrayList<Cliente> cargarClientesAgregadosNuevos(String archivoClientes) throws ParseException 
     {
 		FileReader archivo;
 		BufferedReader lector;
@@ -38,8 +38,15 @@ public class Persistencia {
 				String usuario = partes[4];
 				String contraseña = partes[5];
 				String tipoUsuario = partes[6];
+				int numeroLicencia = Integer.parseInt(partes[7]);
+				String paisExpedicion = partes[8];
+				String fechaVencimientoLicencia = partes[9];
 				
-				Cliente perCliente = new Cliente(nombre, nacionalidad, telefono, fechaNacimiento, usuario, contraseña, tipoUsuario,null);
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		        Date fechau =format.parse(fechaVencimientoLicencia);
+				
+				LicienciaConducion licencia = new LicienciaConducion(numeroLicencia,paisExpedicion, fechau);
+				Cliente perCliente = new Cliente(nombre, nacionalidad, telefono, fechaNacimiento, usuario, contraseña, tipoUsuario,null,licencia);
 				clientes.add(perCliente);
 			}
 		}

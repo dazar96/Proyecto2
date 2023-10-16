@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import logica.AdministradorGeneral;
 import logica.AdministradorLocal;
@@ -93,7 +96,7 @@ public class ControllerCarga {
 		return admiGeneral;
 	}
 	
-	public ArrayList<Cliente> cargarClientes(String archivoClientes) 
+	public ArrayList<Cliente> cargarClientes(String archivoClientes) throws ParseException 
     {
 		FileReader archivo;
 		BufferedReader lector;
@@ -114,11 +117,14 @@ public class ControllerCarga {
 				String usuario = partes[4];
 				String contraseña = partes[5];
 				String tipoUsuario = partes[6];
-				String numeroLicencia = partes[7];
+				int numeroLicencia = Integer.parseInt(partes[7]);
 				String paisExpedicion = partes[8];
 				String fechaVencimientoLicencia = partes[9];
 				
-				LicienciaConducion licencia = new LicienciaConducion(numeroLicencia,paisExpedicion, fechaVencimientoLicencia);
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		        Date fechau =format.parse(fechaVencimientoLicencia);
+				
+				LicienciaConducion licencia = new LicienciaConducion(numeroLicencia,paisExpedicion, fechau);
 				
 				Cliente perCliente = new Cliente(nombre, nacionalidad, telefono, fechaNacimiento, usuario, contraseña, tipoUsuario,null,licencia);
 				clientes.add(perCliente);
