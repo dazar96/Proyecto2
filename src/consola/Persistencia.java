@@ -104,9 +104,10 @@ public class Persistencia {
 					if(idVehiculo == i.getIdVehiculo())
 					{vehiculo = i;}
 				}
+				String nombrePersona = partes[15];
 				Reserva perReserva = new Reserva(identificador, categoriaVehiculo, fechaInicio,
 						fechaFinal, precio30, precioRestante, precioTotal,numeroTarjeta,
-						sedeNombreRecoger,sedeNombreDevolver,conductor,vehiculoRecogido,vehiculo);
+						sedeNombreRecoger,sedeNombreDevolver,conductor,vehiculoRecogido,vehiculo, nombrePersona);
 				reservas.add(perReserva);
 			}
 		}
