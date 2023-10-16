@@ -38,7 +38,7 @@ public class EmpresaAlquilerVehiculos {
   private ArrayList<Reserva> reservas = new ArrayList<Reserva>();
   private ArrayList<Seguro> seguros = new ArrayList<Seguro>();
   public static Integer numeroReservaInteger = 0 ;
-  
+  private Persistencia persistencia;
   
   private void ejecutarPrograma() throws ParseException {
 	 //Pruebas
@@ -230,6 +230,7 @@ private String login(String usuario,String contrasenia) {
  private void menuEmpleado() {
 	 System.out.println("1.Recoger vehiculo cliente ");
 	 System.out.println("2.Devolucion del vehiculo cliente");
+	 System.out.println("3 Crear reserva cliente");
 	 
  }
  private void menuAdministradorGeneral (){ 
@@ -310,7 +311,83 @@ private String login(String usuario,String contrasenia) {
 	 Reserva reservaClienteInterno=null;
 	 int option = Integer.parseInt(input("Ingrese la opcion que desea"));
 	 if(option == 1) {
+		 recogerVehiculoCliente(reservaClienteInterno, empleadoLogin);
+	 }else if(option==2) {
+		 Reserva reservaClienteLogin=null;
 		 Integer numeroReserva = Integer.parseInt(input("Ingrese el identificador de reserva del cliente"));
+		 for (Reserva reservasCliente : reservas) {
+				if(numeroReserva.equals(reservasCliente.getIdentificador())) 
+					reservaClienteLogin = reservasCliente; 
+	 }   empleadoLogin.devolucionCocheCliente(reservaClienteLogin);
+	 String estadoCocheString = input("El carro esta en buen estado Si(1) No(0)");
+	 boolean funcional = false;
+	 if(estadoCocheString.equals("1")) {
+		 funcional = true;
+		 empleadoLogin.revisarEstadoVehiculo(reservaClienteLogin.getVehiculo(), funcional);
+		 System.out.println("El carro fue devuelto con exito"); 
+		 System.out.println("El carro se lavara en unos minutos");
+		 
+	 }else {
+		 String numeroTarjeta =Integer.toString(reservaClienteLogin.getNumeroTarjeta());
+		 int longitud = numeroTarjeta.length();
+		 int ultimosDigitosVisibles = 4;
+		 String asteriscos = "*".repeat(longitud - ultimosDigitosVisibles);
+		 String ultimosDigitos = numeroTarjeta.substring(longitud - ultimosDigitosVisibles);
+		 String numeroOculto = asteriscos + ultimosDigitos;
+		 System.out.println("Generando cobro a la tarjeta"+numeroOculto+"del cliente");
+	 }
+	 
+	  
+	 } else if (option==3) {
+		 ArrayList<Integer> segurosPosiciones = new ArrayList<Integer>();
+		 String categoria=input("Nombre del cliente");
+		 String nombreCliente=input("Tipo de vehiculo");
+		 String nombreSede = input("Sede en la que desea el cliente recogerlo");
+		 String fechaI= input("Fecha de inicio formato: yyyy-MM-dd HH:mm");
+		 String fechaF= input("Fecha de finalizacion formato: yyyy-MM-dd HH:mm");
+		 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		 Date fechaInicio =format.parse(fechaI);
+		 Date fechaFinal = format.parse(fechaF);
+		 try {
+		Vehiculo vehiculo = controllerEmpresa.ReservaVehiculo(categoria, categoriaVehiculo, nombreSede, fechaInicio, fechaFinal, listaSedes);
+		String sedeDevolver = input("Sede que desea devolverlo");
+		mostrarSeguros();
+		int seguro =Integer.parseInt(input("Ingrese el numero del seguro que desea agregar"));
+		boolean conSeguro = false;
+		if(seguro!=0) {
+			segurosPosiciones.add(seguro);
+			String masSeguro = input("Desea agregar otro seguro Si(1) , No(0)");
+			while(masSeguro.equals("1")) {
+				seguro = Integer.parseInt(input("Ingrese el numero del seguro que desea agregar"))  ;
+				segurosPosiciones.add(seguro);
+				masSeguro = input("Desea agregar otro seguro Si(1) , No(0)");
+			}
+			conSeguro = true;
+		}
+		
+		
+		
+		
+		double valorSinSeguro= controllerEmpresa.ValorReservaSinSeguro(vehiculo,listaSedes,sedeDevolver);
+		Cliente clienteLogin = buscarClienteSistema(nombreCliente, listaClientes);
+		reservas.add(controllerEmpresa.CrearReservaCliente(clienteLogin,valorSinSeguro,administradorGeneral,conSeguro, vehiculo,nombreSede,sedeDevolver,seguros,segurosPosiciones));
+		numeroReservaInteger+=1;
+		System.out.println("Creando la reserva... ");
+		Thread.sleep(100);
+		System.out.println("Valor a pagar es"+reservas.get(reservas.size()-1).getPrecio30());
+		System.out.println("Se hizo el cobro a la tarjeta del 30% del valor de la reserva");
+		
+		 } catch (ParseException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+ } 
+
+ 
+ private void recogerVehiculoCliente(Reserva reservaClienteInterno,Empleado empleadoLogin) {
+	 Integer numeroReserva = Integer.parseInt(input("Ingrese el identificador de reserva del cliente"));
 		for (Reserva reserva : reservas) {
 			if(numeroReserva.equals(reserva.getIdentificador()));{
 			reservaClienteInterno = reserva;}
@@ -322,28 +399,23 @@ private String login(String usuario,String contrasenia) {
 			String pais = input("Pais donde fue radicada");
 			valorAdicional = reservaClienteInterno.getVehiculo().getCategoria().getTarifario().getValorExtra2Conduc();
 			SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
-			Date fechaVencimiento = formatoFecha.parse(input("Fecha de vencimiento de la licencia yyyy-MM-dd"));
-			
-			valorAdicional= empleadoLogin.agregarConductor(valorAdicional, reservaClienteInterno, numero, pais, fechaVencimiento);
-			
-		 }
-		 double tarifaTotal = reservaClienteInterno.getPrecioRestante() + valorAdicional;
-		 empleadoLogin.administarRecogidaCliente(reservaClienteInterno);
-		 System.out.println("Verificando los datos del cliente");
-		 System.out.println("La tarifa total a pagar del cliente son"+ tarifaTotal);
-		 System.out.println("Generando cobro a la tarjeta.....");
-		 System.out.println("Pago exitoso");
-	 }else if(option==2) {
-		 Reserva reservaClienteLogin=null;
-		 Integer numeroReserva = Integer.parseInt(input("Ingrese el identificador de reserva del cliente"));
-		 for (Reserva reservasCliente : reservas) {
-				if(numeroReserva.equals(reservasCliente.getIdentificador())) 
-					reservaClienteLogin = reservasCliente; 
-	 }   empleadoLogin.devolucionCocheCliente(reservaClienteLogin);
-	 System.out.println("El carro fue devuelto con exito");
-	 }
- } 
-
+			Date fechaVencimiento;
+			try {
+				fechaVencimiento = formatoFecha.parse(input("Fecha de vencimiento de la licencia yyyy-MM-dd"));
+				valorAdicional= empleadoLogin.agregarConductor(valorAdicional, reservaClienteInterno, numero, pais, fechaVencimiento);
+				double tarifaTotal = reservaClienteInterno.getPrecioRestante() + valorAdicional;
+				 empleadoLogin.administarRecogidaCliente(reservaClienteInterno);
+				 System.out.println("Verificando los datos del cliente");
+				 System.out.println("La tarifa total a pagar del cliente son"+ tarifaTotal);
+				 System.out.println("Generando cobro a la tarjeta.....");
+				 System.out.println("Pago exitoso");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		 }	  
+ }
+ 
  
  private void programaAdministradorLocal(AdministradorLocal administradorLocalLogin) {
 	menuAdministradorLocal();
@@ -428,10 +500,32 @@ public static void main(String[] args) throws ParseException {
 	 EmpresaAlquilerVehiculos programa = new EmpresaAlquilerVehiculos();
 	 ControllerCarga control = new ControllerCarga();
 	 programa.cargaDatos(control);
+	 
+	 Persistencia persistencia = new Persistencia();
+	 programa.cargaPersistencia(persistencia, programa);
+	 
 	 programa.ejecutarPrograma();
-}
+	 }
  
- private Cliente buscarClienteSistema(String nombreCliente,ArrayList<Cliente> clientes) {
+ private void cargaPersistencia(Persistencia persistencia, EmpresaAlquilerVehiculos self) throws ParseException {
+	ArrayList<Cliente> listaClientesAux;
+	listaClientesAux = persistencia.cargarClientesAgregadosNuevos("./data/persistencia/clientes.txt\\");
+	listaClientes.addAll(listaClientesAux);
+	
+	ArrayList<Reserva> reservasAux;
+	reservasAux = persistencia.cargarReservas("./data/persistencia/reservas.txt\\", self);
+	reservas.addAll(reservasAux);
+	numeroReservaInteger+=reservas.size();
+	
+	//for(i: Cliente)
+}
+
+public ArrayList<Vehiculo> darListaVehiculo()
+{
+	return listaVehiculo;
+}
+
+private Cliente buscarClienteSistema(String nombreCliente,ArrayList<Cliente> clientes) {
 	 Cliente clienteEncontrado;
 	 for (Cliente cliente2 : clientes) {
 		if(cliente2.getNombre().equalsIgnoreCase(nombreCliente)) {

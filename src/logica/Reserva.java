@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class Reserva {
 	private Integer identificador;
+	private String nombrePersona;
 	private String categoriaVehiculo;
 	private Date FechaInicio ;
 	private Date FechaFinal ;
@@ -22,8 +23,8 @@ public class Reserva {
 	public Reserva(Integer identificador, String categoriaVehiculo, Date fechaInicio, Date fechaFinal, double precio30,
 			double precioRestante,double precioTotal,int numeroTarjeta,
 			String sedenombreRecoger,String sedeNombreDevolver ,
-			ConductorAdicional conductorAdicional, boolean vehiculoRecogido,Vehiculo vehiculo) {
-		
+			ConductorAdicional conductorAdicional, boolean vehiculoRecogido,Vehiculo vehiculo,String nomrePersona) {
+		this.nombrePersona = nomrePersona;
 		this.identificador = identificador;
 		this.categoriaVehiculo = categoriaVehiculo;
 		FechaInicio = fechaInicio;
@@ -85,6 +86,10 @@ public class Reserva {
 
 	public Vehiculo getVehiculo() {
 		return vehiculo;
+	}
+
+	public int getNumeroTarjeta() {
+		return numeroTarjeta;
 	}
 	
 	

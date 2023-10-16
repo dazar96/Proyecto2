@@ -16,7 +16,7 @@ public class Vehiculo {
 	private CategoriaVehiculo categoria;
 	private Date fechaInicio=null;
 	private Date fechaFinal=null;
-	private  boolean conSeguro = false;
+	private  boolean conSeguro;
 	private boolean funcional = true;
 	
 
@@ -114,7 +114,9 @@ public class Vehiculo {
 	public void setSedeActual(Sede sedeActual) {
 		this.sedeActual = sedeActual;
 	}
-	
+	public void setAlquilado (boolean alquilado) {
+		this.alquilado = alquilado;
+	}
 	
 	
 	
