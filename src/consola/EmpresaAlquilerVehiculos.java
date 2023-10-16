@@ -230,12 +230,19 @@ private String login(String usuario,String contrasenia) {
  private void menuEmpleado() {
 	 System.out.println("1.Recoger vehiculo cliente ");
 	 System.out.println("2.Devolucion del vehiculo cliente");
+	 System.out.println("3 Crear reserva cliente");
 	 
  }
  private void menuAdministradorGeneral (){ 
 
 	 System.out.println("1 Registrar compra de un nuevo vehiculo");
 	 System.out.println("2 Dar de baja un vehiculo");
+ }
+ 
+ private void menuAdministradorLocal(){ 
+
+	 System.out.println("1 Creae Usuario a Cliente");
+	 System.out.println("2 Administrar informacion de empreados");
  }
  
  private void mostrarSeguros() {
@@ -304,7 +311,83 @@ private String login(String usuario,String contrasenia) {
 	 Reserva reservaClienteInterno=null;
 	 int option = Integer.parseInt(input("Ingrese la opcion que desea"));
 	 if(option == 1) {
+		 recogerVehiculoCliente(reservaClienteInterno, empleadoLogin);
+	 }else if(option==2) {
+		 Reserva reservaClienteLogin=null;
 		 Integer numeroReserva = Integer.parseInt(input("Ingrese el identificador de reserva del cliente"));
+		 for (Reserva reservasCliente : reservas) {
+				if(numeroReserva.equals(reservasCliente.getIdentificador())) 
+					reservaClienteLogin = reservasCliente; 
+	 }   empleadoLogin.devolucionCocheCliente(reservaClienteLogin);
+	 String estadoCocheString = input("El carro esta en buen estado Si(1) No(0)");
+	 boolean funcional = false;
+	 if(estadoCocheString.equals("1")) {
+		 funcional = true;
+		 empleadoLogin.revisarEstadoVehiculo(reservaClienteLogin.getVehiculo(), funcional);
+		 System.out.println("El carro fue devuelto con exito"); 
+		 System.out.println("El carro se lavara en unos minutos");
+		 
+	 }else {
+		 String numeroTarjeta =Integer.toString(reservaClienteLogin.getNumeroTarjeta());
+		 int longitud = numeroTarjeta.length();
+		 int ultimosDigitosVisibles = 4;
+		 String asteriscos = "*".repeat(longitud - ultimosDigitosVisibles);
+		 String ultimosDigitos = numeroTarjeta.substring(longitud - ultimosDigitosVisibles);
+		 String numeroOculto = asteriscos + ultimosDigitos;
+		 System.out.println("Generando cobro a la tarjeta"+numeroOculto+"del cliente");
+	 }
+	 
+	  
+	 } else if (option==3) {
+		 ArrayList<Integer> segurosPosiciones = new ArrayList<Integer>();
+		 String categoria=input("Nombre del cliente");
+		 String nombreCliente=input("Tipo de vehiculo");
+		 String nombreSede = input("Sede en la que desea el cliente recogerlo");
+		 String fechaI= input("Fecha de inicio formato: yyyy-MM-dd HH:mm");
+		 String fechaF= input("Fecha de finalizacion formato: yyyy-MM-dd HH:mm");
+		 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		 Date fechaInicio =format.parse(fechaI);
+		 Date fechaFinal = format.parse(fechaF);
+		 try {
+		Vehiculo vehiculo = controllerEmpresa.ReservaVehiculo(categoria, categoriaVehiculo, nombreSede, fechaInicio, fechaFinal, listaSedes);
+		String sedeDevolver = input("Sede que desea devolverlo");
+		mostrarSeguros();
+		int seguro =Integer.parseInt(input("Ingrese el numero del seguro que desea agregar"));
+		boolean conSeguro = false;
+		if(seguro!=0) {
+			segurosPosiciones.add(seguro);
+			String masSeguro = input("Desea agregar otro seguro Si(1) , No(0)");
+			while(masSeguro.equals("1")) {
+				seguro = Integer.parseInt(input("Ingrese el numero del seguro que desea agregar"))  ;
+				segurosPosiciones.add(seguro);
+				masSeguro = input("Desea agregar otro seguro Si(1) , No(0)");
+			}
+			conSeguro = true;
+		}
+		
+		
+		
+		
+		double valorSinSeguro= controllerEmpresa.ValorReservaSinSeguro(vehiculo,listaSedes,sedeDevolver);
+		Cliente clienteLogin = buscarClienteSistema(nombreCliente, listaClientes);
+		reservas.add(controllerEmpresa.CrearReservaCliente(clienteLogin,valorSinSeguro,administradorGeneral,conSeguro, vehiculo,nombreSede,sedeDevolver,seguros,segurosPosiciones));
+		numeroReservaInteger+=1;
+		System.out.println("Creando la reserva... ");
+		Thread.sleep(100);
+		System.out.println("Valor a pagar es"+reservas.get(reservas.size()-1).getPrecio30());
+		System.out.println("Se hizo el cobro a la tarjeta del 30% del valor de la reserva");
+		
+		 } catch (ParseException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+ } 
+
+ 
+ private void recogerVehiculoCliente(Reserva reservaClienteInterno,Empleado empleadoLogin) {
+	 Integer numeroReserva = Integer.parseInt(input("Ingrese el identificador de reserva del cliente"));
 		for (Reserva reserva : reservas) {
 			if(numeroReserva.equals(reserva.getIdentificador()));{
 			reservaClienteInterno = reserva;}
@@ -316,39 +399,103 @@ private String login(String usuario,String contrasenia) {
 			String pais = input("Pais donde fue radicada");
 			valorAdicional = reservaClienteInterno.getVehiculo().getCategoria().getTarifario().getValorExtra2Conduc();
 			SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
-			Date fechaVencimiento = formatoFecha.parse(input("Fecha de vencimiento de la licencia yyyy-MM-dd"));
-			
-			valorAdicional= empleadoLogin.agregarConductor(valorAdicional, reservaClienteInterno, numero, pais, fechaVencimiento);
-			
-		 }
-		 double tarifaTotal = reservaClienteInterno.getPrecioRestante() + valorAdicional;
-		 empleadoLogin.administarRecogidaCliente(reservaClienteInterno);
-		 System.out.println("Verificando los datos del cliente");
-		 System.out.println("La tarifa total a pagar del cliente son"+ tarifaTotal);
-		 System.out.println("Generando cobro a la tarjeta.....");
-		 System.out.println("Pago exitoso");
-	 }else if(option==2) {
-		 Reserva reservaClienteLogin=null;
-		 Integer numeroReserva = Integer.parseInt(input("Ingrese el identificador de reserva del cliente"));
-		 for (Reserva reservasCliente : reservas) {
-				if(numeroReserva.equals(reservasCliente.getIdentificador())) 
-					reservaClienteLogin = reservasCliente; 
-	 }   empleadoLogin.devolucionCocheCliente(reservaClienteLogin);
-	 System.out.println("El carro fue devuelto con exito");
-	 }
- } 
-
+			Date fechaVencimiento;
+			try {
+				fechaVencimiento = formatoFecha.parse(input("Fecha de vencimiento de la licencia yyyy-MM-dd"));
+				valorAdicional= empleadoLogin.agregarConductor(valorAdicional, reservaClienteInterno, numero, pais, fechaVencimiento);
+				double tarifaTotal = reservaClienteInterno.getPrecioRestante() + valorAdicional;
+				 empleadoLogin.administarRecogidaCliente(reservaClienteInterno);
+				 System.out.println("Verificando los datos del cliente");
+				 System.out.println("La tarifa total a pagar del cliente son"+ tarifaTotal);
+				 System.out.println("Generando cobro a la tarjeta.....");
+				 System.out.println("Pago exitoso");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		 }	  
+ }
+ 
  
  private void programaAdministradorLocal(AdministradorLocal administradorLocalLogin) {
-	// TODO Auto-generated method stub
-	
+	menuAdministradorLocal();
+	int option = Integer.parseInt(input("Ingrese la opcion que desea"));
+	if(option==1) {
+		crearUsuario();
+	}else if(option==2) {
+		int opcion2  = Integer.parseInt(input("¿Que desea hacer? 1. Agregar Empleado o 2.Eliminar Empleado\n"));
+	    if (opcion2 == 1) {
+	    	agregarEmpleado();
+	    }else if (opcion2 == 2) {
+	    	eliminarEmpleado();
+	    }
+	}
 }
  
  
- 
- 
- 
- public static void main(String[] args) throws ParseException {
+ private void eliminarEmpleado() {
+	   System.out.println("\n*******ELIMINAR EMPLEADO****************\n");
+	   System.out.println("Por favor llene el formulario: \n");
+	  
+	   String nombre = input("Nombre: ");
+	   String sede = input("Sede: ");
+	   
+	   for ( Sede sed : listaSedes) {
+           if (sed.getNombre().equals(sede)){
+        	   for ( Empleado Emple :  sed.getEmpleados()) {
+                   if (Emple.getNombre().equals(nombre)){
+                	   sed.getEmpleados().remove(Emple);
+                   }
+               }
+        	   
+  
+           }
+       }
+	   
+	   System.out.println("Empleado Eliminado exitosamente \n");
+	   
+}
+
+private void agregarEmpleado() {
+       
+	   System.out.println("\n*******CREAR EMPLEADO***************\n");
+	   System.out.println("Por favor llene el formulario: \n");
+	   String nombre = input("Nombre: ");
+	   String sede = input("Sede: ");
+	   String usuario = input("Digite el nombre de usuario: ");
+	   String contraseña = input("Digite su contraseña ¡NO OLVIDAR!: ");
+	   
+	   Empleado worker = new Empleado(nombre, sede, usuario, contraseña, "Empleado");
+	   
+	   for ( Sede sed : listaSedes) {
+           if (sed.getNombre().equals(sede)){
+        	   sed.getEmpleados().add(worker);
+           }
+       }
+	   
+	   System.out.println("Empleado Agregado exitosamente \n");
+}
+
+private void crearUsuario() {
+	 
+	   System.out.println("\n*******CREACION DE USUARIO****************\n");
+	   System.out.println("Por favor llene el formulario: \n");
+	   
+	   String nombre = input("Nombre: ");
+	   String nacionalidad = input("Nacionalidad: ");
+	   String telefono = input("Telefono: ");
+	   String fechaNac = input("Fecha de Nacimiento: ");
+	   String usuario = input("Digite el nombre de usuario: ");
+	   String contraseña = input("Digite su contraseña ¡NO OLVIDAR!: ");
+	   
+	   
+	   Cliente cliente = new Cliente(nombre, nacionalidad, telefono, fechaNac,usuario, contraseña, "Cliente", null);
+	   listaClientes.add(cliente);
+	   
+	   System.out.println("Cliente Agregado Exitosamente \n");
+}
+
+public static void main(String[] args) throws ParseException {
 	 
 	 EmpresaAlquilerVehiculos programa = new EmpresaAlquilerVehiculos();
 	 ControllerCarga control = new ControllerCarga();
