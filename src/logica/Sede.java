@@ -37,7 +37,9 @@ public class Sede {
 	public String getNombre() {
 		return nombre;
 	}
-	
+	public ArrayList<Empleado> getEmpleados(){
+		return empleados;
+	}
 	
 
 	

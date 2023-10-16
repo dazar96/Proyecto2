@@ -17,13 +17,26 @@ public class AdministradorGeneral extends UsuarioGenerico {
  public void modificarInventario() {
 	
  }
- public double administrarSeguro (boolean conSeguro,Vehiculo vehiculo) {
-	 seguro = new Seguro("Seguro general");
+ public double administrarSeguro (ArrayList<Seguro> seguros,ArrayList<Integer> posiciones,boolean conSeguro,Vehiculo vehiculo) {
+
 	 if(conSeguro) {
+		 double precioseguros=0;
 		 vehiculo.setConSeguro(conSeguro);
-		 return seguro.getPrecio();
+		 for (Integer integer : posiciones) {
+			 precioseguros +=seguros.get(integer-1).getPrecio();
+		}
+		 return precioseguros;
 	 }
-	 seguro.setPrecio(0);
-	 return seguro.getPrecio();
+	 else {
+		return 0;
+	}
+	 
+	 
+	 
+	 
+ }
+ 
+ public void registrarCompraVehiculo() {
+	 
  }
 }

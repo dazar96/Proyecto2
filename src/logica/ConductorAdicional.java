@@ -1,12 +1,12 @@
 package logica;
 
-public class ConductorAdicional extends Cliente {
+public class ConductorAdicional {
 
 	
-	 private static int telefono;
+	 private LicienciaConducion licienciaConducion;
 
-	public ConductorAdicional(String usuario, String contraseña, String tipoUsuario) {
-		super(usuario, contraseña,telefono, tipoUsuario, tipoUsuario, tipoUsuario, tipoUsuario );
-	}//Toca modificar esto 
+	public ConductorAdicional(LicienciaConducion licienciaConducion) {
+		this.licienciaConducion = licienciaConducion;
+	}
 	
 }

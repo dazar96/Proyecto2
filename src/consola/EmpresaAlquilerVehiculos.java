@@ -4,6 +4,7 @@ package consola;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.invoke.StringConcatFactory;
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.ParseException;
@@ -15,6 +16,8 @@ import logica.Cliente;
 import logica.Empleado;
 import logica.Reserva;
 import logica.Sede;
+import logica.Seguro;
+import logica.Tarifario;
 import logica.CategoriaVehiculo;
 import logica.Cliente;
 import logica.ControladorReserva;
@@ -25,21 +28,31 @@ import logica.Vehiculo;
 
 public class EmpresaAlquilerVehiculos {
   private ControladorReserva controllerEmpresa = new ControladorReserva();
-  private ArrayList<UsuarioGenerico> listaUsuarioGenericos = new ArrayList<UsuarioGenerico>();
-  private ArrayList<Cliente> listaClientes;
+  private ArrayList<UsuarioGenerico> listaUsuarioGenericos= new ArrayList<UsuarioGenerico>();
+  private ArrayList<Cliente> listaClientes = new ArrayList<Cliente>();
   private ArrayList<Sede> listaSedes;
   private ArrayList<Empleado> listaEmpleados;
   private ArrayList<CategoriaVehiculo> categoriaVehiculo = new ArrayList<CategoriaVehiculo>();
   private AdministradorGeneral administradorGeneral= new AdministradorGeneral("", "", "");
   private ArrayList<Vehiculo> listaVehiculo = new ArrayList<Vehiculo>();
   private ArrayList<Reserva> reservas = new ArrayList<Reserva>();
-  private void ejecutarPrograma() {
-	 
-;	 System.out.println("Bienvenido a la empresa");
+  private ArrayList<Seguro> seguros = new ArrayList<Seguro>();
+  private void ejecutarPrograma() throws ParseException {
+	 //Pruebas
+	 UsuarioGenerico usuarioGenerico = new UsuarioGenerico("1", "1", "cliente");
+	 listaUsuarioGenericos.add(usuarioGenerico);
+	 Seguro seguro = new Seguro("a",1);
+	 Seguro seguro1 = new Seguro("b",121);
+	 Seguro seguro2 = new Seguro("c",141);
+	 seguros.add(seguro);
+	 seguros.add(seguro1);
+	 seguros.add(seguro2);
+	 //Pruebas
+	 System.out.println("Bienvenido a la empresa");
 	 String usuario=input("Usuario");
 	 String contrasenia=input("Contraseña");
 	 String tipoUsuario =login(usuario, contrasenia);
-	 Cliente clienteLogin = null;
+	 
 	 if(tipoUsuario.equals("")) {
 		 System.out.println("Usuario o contraseña incorrecta");
 		 while (tipoUsuario.equals("")) {
@@ -52,9 +65,8 @@ public class EmpresaAlquilerVehiculos {
 		
 	 } else {
 		System.out.println("Entrando al sistema.....");
-		if(tipoUsuario.equals("Cliente"))
-			
-		{ 
+		if(tipoUsuario.equalsIgnoreCase("Cliente")){ 
+			Cliente clienteLogin = null;
 			for (Cliente cliente : listaClientes) {
 				if(cliente.getUsuario().equals(usuario)&& cliente.getContraseña().equals(contrasenia)) 
 					clienteLogin = cliente;
@@ -62,6 +74,15 @@ public class EmpresaAlquilerVehiculos {
 				
 			}
 			programaCliente(clienteLogin);
+		}else if(tipoUsuario.equalsIgnoreCase("Empleado")) {
+			Empleado empleadoLogin = null;
+			for (Empleado empleado : listaEmpleados) {
+				if(empleado.getUsuario().equals(usuario)&& empleado.getContraseña().equals(contrasenia)) 
+					empleadoLogin = empleado;
+					break;
+			}programaEmpleado(empleadoLogin);
+		} else if (tipoUsuario.equalsIgnoreCase("Administrador General")) {
+			
 		}
 		
 	}
@@ -80,28 +101,45 @@ public class EmpresaAlquilerVehiculos {
 	}return "";
  }
  
- private void programaCliente (Cliente clienteLogin) {
+ private void programaCliente (Cliente clienteLogin) throws ParseException {
 	 MenuCliente();
 	 int option = Integer.parseInt(input("Ingrese la opcion que desea"));
 	 
 	 if(option == 1) {
+		 ArrayList<Integer> segurosPosiciones = new ArrayList<Integer>();
 		 String categoria=input("Ingrese el tipo de vehiculo que desea ");
 		 String nombreSede = input("Ingrese la sede en la que desea recogerlo");
 		 String fechaI= input("Ingrese la fecha de inicio formato: yyyy-MM-dd HH:mm");
-		 String fechaF= input("Ingrese la fecha de inicio formato: yyyy-MM-dd HH:mm");
+		 String fechaF= input("Ingrese la fecha de finalizacion formato: yyyy-MM-dd HH:mm");
+		 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		 Date fechaInicio =format.parse(fechaI);
+		 Date fechaFinal = format.parse(fechaF);
 		 try {
-		Vehiculo vehiculo = controllerEmpresa.ReservaVehiculo(categoria, categoriaVehiculo, nombreSede, fechaI, fechaF, listaSedes);
+		Vehiculo vehiculo = controllerEmpresa.ReservaVehiculo(categoria, categoriaVehiculo, nombreSede, fechaInicio, fechaFinal, listaSedes);
 		String sedeDevolver = input("Ingrese la sede que desea devolverlo");
-		String conductorAdicional = input("Desea agregar otro conductor Si(1) No(0)");
-		String seguro = input("¿Desea agregar algun seguro? Si(1) No(0)");
-		boolean conSeguro= seguro.equals("1");
-		boolean aditional = conductorAdicional.equals("1");
+		mostrarSeguros();
+		int seguro =Integer.parseInt(input("Ingrese el numero del seguro que desea agregar"));
+		boolean conSeguro = false;
+		if(seguro!=0) {
+			segurosPosiciones.add(seguro);
+			String masSeguro = input("Desea agregar otro seguro Si(1) , No(0)");
+			while(masSeguro.equals("1")) {
+				seguro = Integer.parseInt(input("Ingrese el numero del seguro que desea agregar"))  ;
+				segurosPosiciones.add(seguro);
+				masSeguro = input("Desea agregar otro seguro Si(1) , No(0)");
+			}
+			conSeguro = true;
+		}
 		
-		double valorSinSeguro= controllerEmpresa.ValorReservaSinSeguro(vehiculo,listaSedes,sedeDevolver,aditional);
-		reservas.add(controllerEmpresa.CrearReservaCliente(clienteLogin,valorSinSeguro,administradorGeneral,conSeguro, vehiculo,nombreSede,sedeDevolver));
+		
+		
+		
+		double valorSinSeguro= controllerEmpresa.ValorReservaSinSeguro(vehiculo,listaSedes,sedeDevolver);
+		reservas.add(controllerEmpresa.CrearReservaCliente(clienteLogin,valorSinSeguro,administradorGeneral,conSeguro, vehiculo,nombreSede,sedeDevolver,seguros,segurosPosiciones));
 		System.out.println("Creando la reserva... ");
 		Thread.sleep(100);
-		System.out.println("Se hizo el cobro a la tarjeta del 30% del valor de la tarjeta");
+		System.out.println("Su valor a pagar es"+reservas.get(reservas.size()-1).getPrecio30());
+		System.out.println("Se hizo el cobro a la tarjeta del 30% del valor de la reserva");
 		System.out.println("Cuando recoga el vehiculo se hara el cobro restante");
 		
 		 } catch (ParseException e) {
@@ -110,43 +148,169 @@ public class EmpresaAlquilerVehiculos {
 			e.printStackTrace();
 		}
 		 
-	 } else if(option==2) {
-		 Reserva reservaClienteLogin=null;
-		 for (Reserva reservasCliente : reservas) {
-			if(clienteLogin.getNombre().equals(reservasCliente.getIdentificador())) 
-				reservaClienteLogin = reservasCliente;
-			
-		} if(reservaClienteLogin==null) {
-			System.out.println("No tiene reservas registradas");}
+	 } 
+	 else if(option==2) {
+		 ArrayList<Integer> segurosPosiciones = new ArrayList<Integer>();
+		 Empleado empleadoSede = null;
+		 String categoria=input("Ingrese el tipo de vehiculo que desea ");
+		 String nombreSede = input("Ingrese la sede en la que se encuentra");
+		 String fechaI= input("Ingrese la fecha de inicio formato: yyyy-MM-dd HH:mm");
+		 String fechaF= input("Ingrese la fecha de inicio formato: yyyy-MM-dd HH:mm"); 
+		 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		 Date fechaInicio = new Date();
+		 Date fechaFinal = format.parse(fechaF);
+		 Vehiculo vehiculo = controllerEmpresa.ReservaVehiculo(categoria, categoriaVehiculo, nombreSede, fechaInicio, fechaFinal, listaSedes);
+		 String sedeDevolver = input("Ingrese la sede que desea devolverlo");
+		 mostrarSeguros();
+			int seguro =Integer.parseInt(input("Ingrese el numero del seguro que desea agregar"));
+			boolean conSeguro = false;
+			if(seguro!=0) {
+				segurosPosiciones.add(seguro);
+				String masSeguro = input("Desea agregar otro seguro Si(1) , No(0)");
+				while(masSeguro.equals("1")) {
+					seguro = Integer.parseInt(input("Ingrese el numero del seguro que desea agregar"))  ;
+					segurosPosiciones.add(seguro);
+					masSeguro = input("Desea agregar otro seguro Si(1) , No(0)");
+				}
+				conSeguro = true;
+			}
+		 double valorSinSeguro= controllerEmpresa.ValorReservaSinSeguro(vehiculo,listaSedes,sedeDevolver);
+		 Reserva alquiler;
+		 alquiler =(controllerEmpresa.CrearReservaCliente(clienteLogin,valorSinSeguro,administradorGeneral,conSeguro, vehiculo,nombreSede,sedeDevolver,seguros,segurosPosiciones));
+		 reservas.add(alquiler);
 		 
+		 for (Sede sedess: listaSedes) {
+			 if(sedess.getNombre().equalsIgnoreCase(nombreSede)) {
+				empleadoSede= sedess.getEmpleados().get(0);
+				break;
+				 }	 
+			
+			 } 
+		 String conductorAdicional = input("Desea agregar otro conductor Si(1) No(0)");
+		 boolean aditional = conductorAdicional.equals("1");
+		 double valorConductorExtra=0;
+		 if(aditional) {
+			 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			 int numero  = Integer.parseInt(input("Ingrese el numero de su liciencia "));
+			 String paisExpedicion = input("Ingrese el pais de expedicion de la licencia");
+			 Date  fechaVencimiento =  dateFormat.parse(input("Ingrese la fecha de vencimiento de su licencia en formato: dd/MM/yyyy")); 
+			Double valorTotalDouble = controllerEmpresa.getTarifaConductorExtra();
+			valorConductorExtra = empleadoSede.agregarConductor(valorTotalDouble,alquiler,numero,paisExpedicion,fechaVencimiento);
+			 }
+		 empleadoSede.administarRecogidaCliente(alquiler);
+		 
+		 System.out.println("Su valor a pagar es"+(reservas.get(reservas.size()-1).getPrecioTotal()+valorConductorExtra));
+		 System.err.println("Sus datos fueron validados ");
+		 System.err.println("Pago exitoso ");
+		 System.out.println("Las llaves estan encima del vidrio");
 	 }
+		 
 	 }
  private void MenuCliente() {
 	 System.out.println("1.Reservar vehiculo");
-	 System.out.println("2. Recoger vehiculo ");
-	 System.out.println("3.Devolver vehiculo");
+	 System.out.println("2 Alquilar vehiculo");
 	 
  }
+ private void menuEmpleado() {
+	 System.out.println("1.Recoger vehiculo cliente ");
+	 System.out.println("2.Devolucion del vehiculo cliente");
 	 
+ }
+ private void menuAdministradorGeneral (){ 
+
+	 System.out.println("1 Registrar compra de un nuevo vehiculo");
+	 System.out.println("2 Dar de baja un vehiculo");
+ }
+ 
+ private void mostrarSeguros() {
+	 int i =0;
+	 System.out.println("0 No agregar ningun seguro ");
+	 for (Seguro seguro : seguros) {
+		i+=1;
+		System.out.println( i + seguro.getnombre()+":"+seguro.getPrecio());
+	}
+ }
+ /*
+ private void programaAdministradorGeneral (AdministradorGeneral administradorGeneral) {
+	menuAdministradorGeneral();
+	String nombreSedeString = input("Ingrese el nombre de la sede donde se registrara el coche");
+	String modelo =input("Ingrese el modelo del vehiculo");
+	int capacidad = Integer.parseInt( input("Ingrese la capacidad del vehiculo"));
+	String placa = input("Ingrese la placa del carro");
+	String color = input("Ingrese el color del vehiculo");
+	String tipoTransmision = input("Tipo de transmision");
+	String categoriaVehiculo = input("Categoria del vehiculo");
+	Vehiculo vehiculo = new Vehiculo(0, false, null, capacidad, placa,
+			                         modelo, color, tipoTransmision, null, null,
+			                         null, false, false);
+	//Faltan cosas
+ }
+ */
+ private void programaEmpleado(Empleado empleadoLogin) throws ParseException {
+	 menuEmpleado();
+	 Cliente clienteInterno;
+	 Reserva reservaClienteInterno=null;
+	 int option = Integer.parseInt(input("Ingrese la opcion que desea"));
+	 if(option == 1) {
+		 String nombreCliente = input("Ingrese el nombre del cliente");
+		 clienteInterno = buscarClienteSistema(nombreCliente,  listaClientes);
+		for (Reserva reserva : reservas) {
+			if(nombreCliente.equals(reserva.getIdentificador()));{
+			reservaClienteInterno = reserva;}
+		}
+		 double valorAdicional = 0;
+		 String adicional = input("El cliente desea agregar otro conductor Si(1) No (0)");
+		 if(adicional.equals("1")) {
+			int numero = Integer.parseInt(input("Numero de licencia"));
+			String pais = input("Pais donde fue radicada");
+			valorAdicional = controllerEmpresa.getTarifaConductorExtra();
+			SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+			Date fechaVencimiento = formatoFecha.parse(input("Fecha de vencimiento de la licencia yyyy-MM-dd"));
+			
+			valorAdicional= empleadoLogin.agregarConductor(valorAdicional, reservaClienteInterno, numero, pais, fechaVencimiento);
+			
+		 }
+		 double tarifaTotal = reservaClienteInterno.getPrecioRestante() + valorAdicional;
+		 empleadoLogin.administarRecogidaCliente(reservaClienteInterno);
+		 System.out.println("Verificando los datos del cliente");
+		 System.out.println("La tarifa total a pagar del cliente son"+ tarifaTotal);
+		 System.out.println("Generando cobro a la tarjeta.....");
+		 System.out.println("Pago exitoso");
+	 }else if(option==2) {
+		 Reserva reservaClienteLogin=null;
+		 Cliente cliente;
+		 String nombreCliente = input("Nombre del cliente");
+		 cliente = buscarClienteSistema(nombreCliente, listaClientes);
+		 for (Reserva reservasCliente : reservas) {
+				if(cliente.getNombre().equals(reservasCliente.getIdentificador())) 
+					reservaClienteLogin = reservasCliente; 
+	 }   empleadoLogin.devolucionCocheCliente(reservaClienteLogin);
+	 System.out.println("El carro fue devuelto con exito");
+	 }
+ } 
+
  
  
  
  
  
- 
- public static void main(String[] args) {
+ public static void main(String[] args) throws ParseException {
+	 
 	 EmpresaAlquilerVehiculos programa = new EmpresaAlquilerVehiculos();
-	 ControllerCarga control = new ControllerCarga();
-	 programa.cargaDatos(control);
+	// ControllerCarga control = new ControllerCarga();
+	 //programa.cargaDatos(control);
 	 programa.ejecutarPrograma();
 }
  
- 
- 
- 
- 
- 
- 
+ private Cliente buscarClienteSistema(String nombreCliente,ArrayList<Cliente> clientes) {
+	 Cliente clienteEncontrado;
+	 for (Cliente cliente2 : clientes) {
+		if(cliente2.getNombre().equalsIgnoreCase(nombreCliente)) {
+			clienteEncontrado = cliente2;
+			return clienteEncontrado;
+		}
+	} return null;
+ }
  private void cargaDatos(ControllerCarga control) {
 	  
 	 ArrayList<Cliente> LCliente = control.cargarClientes(null);
@@ -154,7 +318,7 @@ public class EmpresaAlquilerVehiculos {
 	 ArrayList<Vehiculo> LVehiculos = control.cargarVehiculos(null);
 	 ArrayList<AdministradorLocal> LAdmiLocal = control.cargarAdministradorLocal(null);
 	 ArrayList<Sede> LSedes = control.cargarSedes(LEmpleado, LVehiculos, LAdmiLocal, null);
-	 AdministradorGeneral admiGene = control.carga
+	// AdministradorGeneral admiGene = control.carga Quitar ahorita
 	 
 	 this.listaSedes = LSedes;
 	 this.listaClientes  =LCliente;

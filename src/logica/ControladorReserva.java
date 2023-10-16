@@ -14,7 +14,7 @@ public class ControladorReserva {
 	
 	
 	//Verificar datos ingresados por el usuario
-	public Vehiculo ReservaVehiculo(String categoria , ArrayList<CategoriaVehiculo> categoriaVehiculo , String nombreSede ,String FechaI,String FechaF ,ArrayList<Sede> listaSedes) throws ParseException{
+	public Vehiculo ReservaVehiculo(String categoria , ArrayList<CategoriaVehiculo> categoriaVehiculo , String nombreSede ,Date fechaInicio,Date fechaFinal ,ArrayList<Sede> listaSedes) throws ParseException{
 		boolean encontrado = false;
 		 for (CategoriaVehiculo  categorias :categoriaVehiculo) {
 			 if(categoria.equalsIgnoreCase(categorias.getNombreCategoria())) {
@@ -25,11 +25,9 @@ public class ControladorReserva {
 			 
 		 } if(encontrado) {
 			 
-			 for (Sede sede : listaSedes) {
-				 if(sede.getNombre().equalsIgnoreCase(nombreSede)) {
-					 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-					 Date fechaInicio = format.parse(FechaI);
-					 Date fechaFinal = format.parse(FechaF);
+			  		Sede sede = buscarSedePorNombre(nombreSede, listaSedes);
+			  			if(sede==null)
+			  				return null;
 		                for	(int i =0; i<sede.getInventarioVehiculos().size();i++)	{
 		                	 Vehiculo coche = sede.getInventarioVehiculos().get(i);              
 						if((coche.getCategoria().getNombreCategoria().equals(categoria))) 
@@ -45,9 +43,9 @@ public class ControladorReserva {
 							}
 							
 		 				
-					}break;
-				 }
-			 }
+					}
+				 
+			 
 			 
 	
 		 }else {
@@ -56,18 +54,11 @@ public class ControladorReserva {
 		return null;
 		//Calcula total del precio de la reserva sin seguro
 	
-	} public  double ValorReservaSinSeguro(Vehiculo vehiculo,ArrayList<Sede> sedes,String sedeDevuelta,boolean aditional) {
+	} public  Double ValorReservaSinSeguro(Vehiculo vehiculo,ArrayList<Sede> sedes,String sedeDevuelta) {
 		Tarifario tarifario = new Tarifario();
-		boolean find = false;
-		for (Sede sede : sedes) {
-			if(sede.getNombre().equals(sedeDevuelta)) {
-				find = true;
-			}
-		}
-		if(find!=true) {
-			return 0;
-		}
-		
+		Sede sede = buscarSedePorNombre(sedeDevuelta, sedes);
+		if(sede==null) 
+			return null;
 		int precioCategoria = vehiculo.getCategoria().getTarifaDiaria();
 		long tiempodiferencia=vehiculo.getFechaInicio().getTime()-vehiculo.getFechaFinal().getTime();
 		long diasDiferencia = tiempodiferencia / (24 * 60 * 60 * 1000);
@@ -75,13 +66,10 @@ public class ControladorReserva {
 		if(sedeDevuelta.equalsIgnoreCase(vehiculo.getSedeActual().getNombre())) {
 			tarifario.setValorExtraOtraSede(0);
 		}
-		if(aditional!=true) {
-			tarifario.setValorExtra2Conduc(0);
-		} 
 		if(!tarifario.TemporadaAlta(vehiculo.getFechaInicio(), vehiculo.getFechaFinal())) {
 			tarifario.setAumentoTemporada(0);
 		}
-		 double tarifaTotalSinSeguro=(precioCategoria*numeroDias)+tarifario.getAumentoTemporada()+tarifario.getValorExtra2Conduc()+tarifario.getValorExtraOtraSede();
+		 Double tarifaTotalSinSeguro=(precioCategoria*numeroDias)+tarifario.getAumentoTemporada()+tarifario.getValorExtraOtraSede();
 		 
 		 
 		 
@@ -89,12 +77,33 @@ public class ControladorReserva {
 		
 		return tarifaTotalSinSeguro;
 	} //cliente.crearReserva();
-	public Reserva CrearReservaCliente(Cliente cliente,double valorSinSeguro ,AdministradorGeneral administradorGeneral,boolean conSeguro,Vehiculo vehiculo,String sedeDevolver,String sederecoger) {
-		double precioSeguro = administradorGeneral.administrarSeguro(conSeguro,vehiculo);
+	public Reserva CrearReservaCliente(Cliente cliente,double valorSinSeguro ,
+			AdministradorGeneral administradorGeneral,boolean conSeguro,
+			Vehiculo vehiculo,String sedeDevolver,String sederecoger,ArrayList<Seguro> seguros,ArrayList<Integer> posiciones) {
+		double precioSeguro = administradorGeneral.administrarSeguro(seguros,posiciones,conSeguro,vehiculo);
 		double precioTotal = valorSinSeguro + precioSeguro;
 		double precio30 = precioTotal*0.3;
 		double precioRestante = precioTotal*0.7;
-		Reserva reserva = cliente.crearReserva(vehiculo.getCategoria().getNombreCategoria(),vehiculo.getFechaInicio(), vehiculo.getFechaFinal(), precio30, precioRestante,sederecoger,sedeDevolver);
+		Reserva reserva = cliente.crearReserva(vehiculo,vehiculo.getFechaInicio(), vehiculo.getFechaFinal(), precio30, precioRestante,sederecoger,sedeDevolver);
 		return reserva;
 	}
+	
+	public Vehiculo alquilarVehiculo() {
+		return null;
+	}
+	
+	
+	public double getTarifaConductorExtra() {
+		return tarifario.getValorExtra2Conduc();
+	}
+	public Sede buscarSedePorNombre(String nombreSede, ArrayList<Sede> sedes) {
+		Sede sedeABuscarSede=null;	
+		for (Sede sede : sedes) {
+			if(sede.getNombre().equalsIgnoreCase(nombreSede)) {
+				sedeABuscarSede = sede;
+				return sedeABuscarSede;
+			}
+		}return sedeABuscarSede;
+	}
+	
 }

@@ -15,9 +15,14 @@ public class Reserva {
 	private int numeroTarjeta;
 	private String sedeNombreRecoger;
 	private String sedeNombreDevolver;
+	private ConductorAdicional conductorAdicional;
+	private boolean  vehiculoRecogido;
+	private Vehiculo vehiculo;
 	
 	public Reserva(String identificador, String categoriaVehiculo, Date fechaInicio, Date fechaFinal, double precio30,
-			double precioRestante,double precioTotal,int numeroTarjeta,String sedenombreRecoger,String sedeNombreDevolver) {
+			double precioRestante,double precioTotal,int numeroTarjeta,
+			String sedenombreRecoger,String sedeNombreDevolver ,
+			ConductorAdicional conductorAdicional, boolean vehiculoRecogido,Vehiculo vehiculo) {
 		
 		this.identificador = identificador;
 		this.categoriaVehiculo = categoriaVehiculo;
@@ -29,6 +34,9 @@ public class Reserva {
 		this.numeroTarjeta = numeroTarjeta;
 		this.sedeNombreRecoger = sedenombreRecoger;
 		this.sedeNombreDevolver =sedeNombreRecoger;
+		this.conductorAdicional=conductorAdicional;
+		this.vehiculoRecogido = vehiculoRecogido;
+		this.vehiculo = vehiculo;
 	}
 
 	public String getIdentificador() {
@@ -66,6 +74,23 @@ public class Reserva {
 	public String getSedeNombreDevolver() {
 		return sedeNombreDevolver;
 	}
+
+	public void setConductorAdicional(ConductorAdicional conductorAdicional) {
+		this.conductorAdicional = conductorAdicional;
+	}
+
+	public void setVehiculoRecogido(boolean vehiculoRecogido) {
+		this.vehiculoRecogido = vehiculoRecogido;
+	}
+
+	public Vehiculo getVehiculo() {
+		return vehiculo;
+	}
+	
+	
+	
+	
+	
 	
 	
 	

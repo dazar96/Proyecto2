@@ -31,8 +31,11 @@ public  class Cliente extends UsuarioGenerico {
 }
 
 
-public Reserva crearReserva(String categoriaVehiculo,Date fechaInicio,Date FechaFinal,double precio30 ,double precioRestante,String sedeDevolver,String sedeRecoger) {
-	  Reserva reserva = new Reserva(nombre,categoriaVehiculo,fechaInicio,FechaFinal,precio30,precioRestante,precio30+precioRestante,medioDePago.getNumeroTarjeta(),sedeRecoger,sedeDevolver);	  
+public Reserva crearReserva(Vehiculo vehiculo,Date fechaInicio,Date FechaFinal,double precio30 ,double precioRestante,String sedeDevolver,String sedeRecoger) {
+	  Reserva reserva = new Reserva(nombre,vehiculo.getCategoria().getNombreCategoria(),
+			  fechaInicio,FechaFinal,precio30,precioRestante,
+			  precio30+precioRestante,medioDePago.getNumeroTarjeta(),
+			  sedeRecoger,sedeDevolver,null,false,vehiculo);	  
 	  reservas = new ArrayList<Reserva>();
 	  reservas.add(reserva); 
 	  return reserva;

@@ -5,23 +5,40 @@ import java.util.Set;
 
 public class Vehiculo {
 	private int idVehiculo;
-	private Sede Actual;
-	private boolean alquilado; //merge aca
-	private String sedeActual; //merge aca
+	private Sede sedeActual;
+	private boolean alquilado =false; 
+	private String sedeInicial; 
 	private int capacidad;
 	private String placa;
 	private String modelo;
 	private String color;
 	private String tipoTransmision;
 	private CategoriaVehiculo categoria;
-	private Date fechaInicio;
-	private Date fechaFinal;
+	private Date fechaInicio=null;
+	private Date fechaFinal=null;
 	private  boolean conSeguro = false;
+	private boolean funcional = true;
 	
-	public Vehiculo() {
-		fechaFinal=null;
-		fechaInicio= null;
-	}//Constructor Mio
+	public Vehiculo(int idVehiculo, boolean alquilado,Sede sedeActual,int capacidad, String placa, 
+			String modelo, String color, 
+			String tipoTransmision,CategoriaVehiculo categoria,
+			Date fechaInicio,Date fechaFinal,boolean conseguro,boolean funcional )
+	{
+		this.idVehiculo = idVehiculo;
+		this.alquilado = alquilado;
+		this.sedeActual = sedeActual;
+		this.capacidad = capacidad;
+		this.placa = placa;
+		this.modelo = modelo;
+		this.color = color;
+		this.tipoTransmision = tipoTransmision;
+		this.categoria = categoria;
+		this.fechaInicio = fechaInicio;
+		this.fechaFinal = fechaFinal;
+		this.conSeguro = conseguro;
+		this.funcional = funcional;
+		
+	}
 	
 	
 	
@@ -45,7 +62,7 @@ public class Vehiculo {
 	
 	
 	public Sede getSedeActual() {
-		return Actual;
+		return sedeActual;
 	}
 	
 	public void setConSeguro(boolean conSeguro) {
@@ -57,15 +74,15 @@ public class Vehiculo {
 // Revisar esto
 	public String getSede()
     {
-    	return sedeActual;
+    	return sedeInicial;
     }
 	
 	//Constructor Mateo
-	public Vehiculo(int idVehiculo, boolean alquilado,String sedeActual,int capacidad, String placa, String modelo, String color, String tipoTransmision )
+	public Vehiculo(int idVehiculo, boolean alquilado,String sedeInicial,int capacidad, String placa, String modelo, String color, String tipoTransmision )
 	{
 		this.idVehiculo = idVehiculo;
 		this.alquilado = alquilado;
-		this.sedeActual = sedeActual;
+		this.sedeInicial = sedeInicial;
 		this.capacidad = capacidad;
 		this.placa = placa;
 		this.modelo = modelo;

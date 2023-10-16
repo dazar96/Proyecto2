@@ -1,5 +1,7 @@
 package logica;
 
+import java.util.Date;
+
 public class Empleado  extends UsuarioGenerico{
 	
 	private String nombre;
@@ -16,5 +18,21 @@ public class Empleado  extends UsuarioGenerico{
 	{
 		return nombre;
 	}
+	
+	public void administarRecogidaCliente(Reserva reserva) {
+		reserva.setVehiculoRecogido(true);
+	}
+	public double agregarConductor(double valorAdicionalConductor,Reserva reserva,int numero,String pais,Date fechaVencimiento) {
+		LicienciaConducion licienciaConducion = new LicienciaConducion(numero,pais,fechaVencimiento);
+		ConductorAdicional conductorAdicional =new ConductorAdicional(licienciaConducion);
+		reserva.setConductorAdicional(conductorAdicional);
+		return valorAdicionalConductor;
+		
+	}
+	public void devolucionCocheCliente(Reserva reserva) {
+		reserva.setVehiculoRecogido(false);
+		reserva.getVehiculo().setFechaInicio(null);	
+		reserva.getVehiculo().setFechaFinal( null);
+		}
 }
 
