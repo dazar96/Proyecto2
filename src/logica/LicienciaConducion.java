@@ -3,15 +3,15 @@ package logica;
 import java.util.Date;
 
 public class LicienciaConducion {
- private int number;
+ private String number;
  private String paisExpedicion;
- private Date fechaVencimiento;
+ private String fechaVencimiento;
 
- public LicienciaConducion(int number, String paisExpedicion, Date fechaVencimiento) {
+ public LicienciaConducion(String numeroLicencia, String paisExpedicion, String fechaVencimientoLicencia) {
 	
-	this.number = number;
+	this.number = numeroLicencia;
 	this.paisExpedicion = paisExpedicion;
-	this.fechaVencimiento = fechaVencimiento;
-}
+	this.fechaVencimiento = fechaVencimientoLicencia;
+ }
  
 }
