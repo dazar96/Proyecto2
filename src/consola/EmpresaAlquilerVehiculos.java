@@ -38,7 +38,7 @@ public class EmpresaAlquilerVehiculos {
   private ArrayList<Reserva> reservas = new ArrayList<Reserva>();
   private ArrayList<Seguro> seguros = new ArrayList<Seguro>();
   public static Integer numeroReservaInteger = 0 ;
-  
+  private Persistencia persistencia;
   
   private void ejecutarPrograma() throws ParseException {
 	 //Pruebas
@@ -353,10 +353,32 @@ private String login(String usuario,String contrasenia) {
 	 EmpresaAlquilerVehiculos programa = new EmpresaAlquilerVehiculos();
 	 ControllerCarga control = new ControllerCarga();
 	 programa.cargaDatos(control);
+	 
+	 Persistencia persistencia = new Persistencia();
+	 programa.cargaPersistencia(persistencia, programa);
+	 
 	 programa.ejecutarPrograma();
-}
+	 }
  
- private Cliente buscarClienteSistema(String nombreCliente,ArrayList<Cliente> clientes) {
+ private void cargaPersistencia(Persistencia persistencia, EmpresaAlquilerVehiculos self) throws ParseException {
+	ArrayList<Cliente> listaClientesAux;
+	listaClientesAux = persistencia.cargarClientesAgregadosNuevos("./data/persistencia/clientes.txt\\");
+	listaClientes.addAll(listaClientesAux);
+	
+	ArrayList<Reserva> reservasAux;
+	reservasAux = persistencia.cargarReservas("./data/persistencia/reservas.txt\\", self);
+	reservas.addAll(reservasAux);
+	numeroReservaInteger+=reservas.size();
+	
+	//for(i: Cliente)
+}
+
+public ArrayList<Vehiculo> darListaVehiculo()
+{
+	return listaVehiculo;
+}
+
+private Cliente buscarClienteSistema(String nombreCliente,ArrayList<Cliente> clientes) {
 	 Cliente clienteEncontrado;
 	 for (Cliente cliente2 : clientes) {
 		if(cliente2.getNombre().equalsIgnoreCase(nombreCliente)) {
