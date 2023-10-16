@@ -19,13 +19,15 @@ public class Vehiculo {
 	private  boolean conSeguro = false;
 	private boolean funcional = true;
 	
-	public Vehiculo(int idVehiculo, boolean alquilado,Sede sedeActual,int capacidad, String placa, 
+
+	public Vehiculo(int idVehiculo, boolean alquilado,Sede sedeActual,String sedeInicial,int capacidad, String placa, 
 			String modelo, String color, 
 			String tipoTransmision,CategoriaVehiculo categoria,
 			Date fechaInicio,Date fechaFinal,boolean conseguro,boolean funcional )
 	{
 		this.idVehiculo = idVehiculo;
 		this.alquilado = alquilado;
+		this.sedeInicial = sedeInicial;
 		this.sedeActual = sedeActual;
 		this.capacidad = capacidad;
 		this.placa = placa;
@@ -39,14 +41,11 @@ public class Vehiculo {
 		this.funcional = funcional;
 		
 	}
-	
-	
-	
 	//Getters and Setters
 	
 	public CategoriaVehiculo getCategoria() {
-		return categoria;
-	}
+		return categoria;}
+
 	public Date getFechaInicio() {
 		return fechaInicio;
 	}
@@ -77,18 +76,51 @@ public class Vehiculo {
     	return sedeInicial;
     }
 	
+
 	//Constructor Mateo
-	public Vehiculo(int idVehiculo, boolean alquilado,String sedeInicial,int capacidad, String placa, String modelo, String color, String tipoTransmision )
-	{
-		this.idVehiculo = idVehiculo;
-		this.alquilado = alquilado;
-		this.sedeInicial = sedeInicial;
-		this.capacidad = capacidad;
-		this.placa = placa;
-		this.modelo = modelo;
-		this.color = color;
-		this.tipoTransmision = tipoTransmision;
+	//Getters and Setters
+	
+	
+	public int getidVehiculo() {
+		return idVehiculo;
 	}
+	
+	public boolean getAlquilado() {
+		return alquilado;
+	}
+	
+	public String getSedeString() {
+		return sedeInicial;
+	}
+	
+	public int getCapacidad() {
+		return capacidad;
+	}
+	
+	public String getPlaca() {
+		return placa;
+	}
+	
+	public String getModelo() {
+		return modelo;
+	}
+	
+	public String getColor() {
+		return color;
+	}
+	
+	public String getTipoTransmision() {
+		return tipoTransmision;
+	}
+	
+	
+	
+	
+	
+
+	
+	
+	
 	
 	
 	

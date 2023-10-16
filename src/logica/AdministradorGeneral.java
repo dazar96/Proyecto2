@@ -9,12 +9,12 @@ public class AdministradorGeneral extends UsuarioGenerico {
 
 	private String nombre;
 	
- public AdministradorGeneral(String usuario, String contraseña, String tipoUsuario) {
+ public AdministradorGeneral(String nombre, String usuario, String contraseña, String tipoUsuario) {
 	super(usuario, contraseña, tipoUsuario);
-	// TODO Auto-generated constructor stub
+	this.nombre = nombre;
 	}
 	
- public void modificarInventario() {
+public void modificarInventario() {
 	
  }
  public double administrarSeguro (ArrayList<Seguro> seguros,ArrayList<Integer> posiciones,boolean conSeguro,Vehiculo vehiculo) {

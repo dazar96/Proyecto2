@@ -41,6 +41,15 @@ public class Sede {
 		return empleados;
 	}
 	
+	public String getDiasHorasAtencion() {
+		return diasHorasAtencion;
+	}
+	public String getUbicacion() {
+		return ubicacion;
+	}
+	
+
+	
 
 	
 }

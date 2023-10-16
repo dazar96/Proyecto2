@@ -16,25 +16,24 @@ import logica.Cliente;
 import logica.Empleado;
 import logica.Reserva;
 import logica.Sede;
-import logica.Seguro;
-import logica.Tarifario;
 import logica.CategoriaVehiculo;
 import logica.Cliente;
 import logica.ControladorReserva;
 import logica.AdministradorLocal;
+import logica.Seguro;
 
 import logica.UsuarioGenerico;
 import logica.Vehiculo;
 
 public class EmpresaAlquilerVehiculos {
   private ControladorReserva controllerEmpresa = new ControladorReserva();
-  private ArrayList<UsuarioGenerico> listaUsuarioGenericos= new ArrayList<UsuarioGenerico>();
-  private ArrayList<Cliente> listaClientes = new ArrayList<Cliente>();
+  private ArrayList<UsuarioGenerico> listaUsuarioGenericos;
+  private ArrayList<Cliente> listaClientes ;
   private ArrayList<Sede> listaSedes;
   private ArrayList<Empleado> listaEmpleados;
-  private ArrayList<CategoriaVehiculo> categoriaVehiculo = new ArrayList<CategoriaVehiculo>();
-  private AdministradorGeneral administradorGeneral= new AdministradorGeneral("", "", "");
-  private ArrayList<Vehiculo> listaVehiculo = new ArrayList<Vehiculo>();
+  private ArrayList<CategoriaVehiculo> categoriaVehiculo;
+  private AdministradorGeneral administradorGeneral;
+  private ArrayList<Vehiculo> listaVehiculo ;
   private ArrayList<Reserva> reservas = new ArrayList<Reserva>();
   private ArrayList<Seguro> seguros = new ArrayList<Seguro>();
   private void ejecutarPrograma() throws ParseException {
@@ -297,8 +296,8 @@ public class EmpresaAlquilerVehiculos {
  public static void main(String[] args) throws ParseException {
 	 
 	 EmpresaAlquilerVehiculos programa = new EmpresaAlquilerVehiculos();
-	// ControllerCarga control = new ControllerCarga();
-	 //programa.cargaDatos(control);
+	 ControllerCarga control = new ControllerCarga();
+	 programa.cargaDatos(control);
 	 programa.ejecutarPrograma();
 }
  
@@ -313,17 +312,13 @@ public class EmpresaAlquilerVehiculos {
  }
  private void cargaDatos(ControllerCarga control) {
 	  
-	 ArrayList<Cliente> LCliente = control.cargarClientes(null);
-	 ArrayList<Empleado> LEmpleado = control.cargarEmpleados(null);
-	 ArrayList<Vehiculo> LVehiculos = control.cargarVehiculos(null);
-	 ArrayList<AdministradorLocal> LAdmiLocal = control.cargarAdministradorLocal(null);
-	 ArrayList<Sede> LSedes = control.cargarSedes(LEmpleado, LVehiculos, LAdmiLocal, null);
-	// AdministradorGeneral admiGene = control.carga Quitar ahorita
-	 
-	 this.listaSedes = LSedes;
-	 this.listaClientes  =LCliente;
- 
- 
+	 listaClientes = control.cargarClientes("./data/clientes.txt\\");
+	 ArrayList<Empleado> LEmpleado = control.cargarEmpleados("./data/empleados.txt\\");
+	 categoriaVehiculo = control.cargarCategoria("./data/tarifas.txt\\\\");
+	 listaVehiculo = control.cargarVehiculos(categoriaVehiculo,"./data/vehiculos.txt\\");
+	 ArrayList<AdministradorLocal> LAdmiLocal = control.cargarAdministradorLocal("./data/administradorLocal.txt\\");
+	 administradorGeneral = control.cargarAdministradorGeneral("./data/administradorGeneral.txt\\");
+	 listaSedes = control.cargarSedes(LEmpleado, listaVehiculo, LAdmiLocal, "./data/sedes.txt\\");
      }
  
  

@@ -7,19 +7,20 @@ public  class Cliente extends UsuarioGenerico {
  
  public String nombre;
  public String nacionalidad;
- public int telefono;
+ public String telefono;
  public String fechaNac;
  protected LicienciaConducion licienciaConducion;
  private  MedioDePago medioDePago;
- protected  ArrayList<Reserva>  reservas;
+ protected  ArrayList<Reserva>  reservas = new ArrayList<Reserva>();
  
- public Cliente(String nombre, String nacionalidad, int telefono, String fechaNacimiento,String usuario, String contraseña, String tipoUsuario)
+ public Cliente(String nombre, String nacionalidad, String telefono, String fechaNacimiento,String usuario, String contraseña, String tipoUsuario,ArrayList<Reserva> reservas)
 	{
 	  super(usuario, contraseña, tipoUsuario);//Le agregue aca estos 3
 		this.nombre = nombre;
 		this.nombre = nacionalidad;
 		this.telefono = telefono;
 		this.fechaNac = fechaNacimiento;
+		this.reservas = reservas;
 		
 		
 		
@@ -28,7 +29,8 @@ public  class Cliente extends UsuarioGenerico {
  
   public String getNombre() {
 	return nombre;
-}
+  }
+
 
 
 public Reserva crearReserva(Vehiculo vehiculo,Date fechaInicio,Date FechaFinal,double precio30 ,double precioRestante,String sedeDevolver,String sedeRecoger) {
@@ -36,12 +38,13 @@ public Reserva crearReserva(Vehiculo vehiculo,Date fechaInicio,Date FechaFinal,d
 			  fechaInicio,FechaFinal,precio30,precioRestante,
 			  precio30+precioRestante,medioDePago.getNumeroTarjeta(),
 			  sedeRecoger,sedeDevolver,null,false,vehiculo);	  
-	  reservas = new ArrayList<Reserva>();
-	  reservas.add(reserva); 
-	  return reserva;
-  }
- public  ArrayList<Reserva> getReservas() {
+	  			reservas.add(reserva);
+	  			return reserva;
+ }
+
+  
+  public  ArrayList<Reserva> getReservas() {
 	return reservas;
-}
+  }
 
 }

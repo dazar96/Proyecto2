@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.concurrent.Flow.Publisher;
 
 public  class Tarifario {
-	private int idTarifa;
 	// private  double tarifaDia ; La tarifa del dia depende de la categoria
 	private  double aumentoTemporada;
 	private  double valorExtraOtraSede;
@@ -13,19 +12,12 @@ public  class Tarifario {
 	private final int mestemporadaAltaInicio =5;
 	private final int mestemporadaAltaFinal =7;
 	//Toca poner una tarifa 
-	public Tarifario() {
-		int idTarifa;
-		double aumentoTemporada;
-		double valorExtra2Conduc;
-		 double valorExtraOtraSede;
+	public Tarifario(double aumentoTemporada,double valorExtraOtraSede,double valorExtraOtrasede) {
+		this.aumentoTemporada = aumentoTemporada;
+		this.valorExtra2Conduc = valorExtra2Conduc;
+		this.valorExtraOtraSede = valorExtraOtraSede;
 	}
-	
-	public int getIdTarifa() {
-		return idTarifa;
-	}
-	public void setIdTarifa(int idTarifa) {
-		this.idTarifa = idTarifa;
-	}
+
 	
 	public double getAumentoTemporada() {
 		return aumentoTemporada;

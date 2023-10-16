@@ -1,0 +1,10 @@
+ArmandoC;Colombiano;3001504590;32874;Cliente1;DPOO1;Cliente
+BellaC;Colombiano;3001504591;33239;Cliente2;DPOO2;Cliente
+CamiloC;Colombiano;3001504592;33604;Cliente3;DPOO3;Cliente
+DanielC;Colombiano;3001504593;33970;Cliente4;DPOO4;Cliente
+EstebanC;Colombiano;3001504594;34335;Cliente5;DPOO5;Cliente
+FernandoC;Colombiano;3001504595;34700;Cliente6;DPOO6;Cliente
+GustavoC;Colombiano;3001504596;35065;Cliente7;DPOO7;Cliente
+HernanC;Colombiano;3001504597;35431;Cliente8;DPOO8;Cliente
+IgnacioC;Colombiano;3001504598;35796;Cliente9;DPOO9;Cliente
+JavierC;Colombiano;3001504599;36161;Cliente10;DPOO10;Cliente

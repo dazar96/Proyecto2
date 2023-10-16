@@ -55,11 +55,13 @@ public class ControladorReserva {
 		//Calcula total del precio de la reserva sin seguro
 	
 	} public  Double ValorReservaSinSeguro(Vehiculo vehiculo,ArrayList<Sede> sedes,String sedeDevuelta) {
-		Tarifario tarifario = new Tarifario();
+		Tarifario tarifario = vehiculo.getCategoria().getTarifario();
 		Sede sede = buscarSedePorNombre(sedeDevuelta, sedes);
 		if(sede==null) 
 			return null;
-		int precioCategoria = vehiculo.getCategoria().getTarifaDiaria();
+		
+		
+		double precioCategoria = vehiculo.getCategoria().getTarifaDiaria();
 		long tiempodiferencia=vehiculo.getFechaInicio().getTime()-vehiculo.getFechaFinal().getTime();
 		long diasDiferencia = tiempodiferencia / (24 * 60 * 60 * 1000);
 		int numeroDias = (int) (diasDiferencia + 1);
