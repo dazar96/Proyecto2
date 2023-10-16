@@ -238,6 +238,12 @@ private String login(String usuario,String contrasenia) {
 	 System.out.println("2 Dar de baja un vehiculo");
  }
  
+ private void menuAdministradorLocal(){ 
+
+	 System.out.println("1 Creae Usuario a Cliente");
+	 System.out.println("2 Administrar informacion de empreados");
+ }
+ 
  private void mostrarSeguros() {
 	 int i =0;
 	 System.out.println("0 No agregar ningun seguro ");
@@ -340,15 +346,84 @@ private String login(String usuario,String contrasenia) {
 
  
  private void programaAdministradorLocal(AdministradorLocal administradorLocalLogin) {
-	// TODO Auto-generated method stub
-	
+	menuAdministradorLocal();
+	int option = Integer.parseInt(input("Ingrese la opcion que desea"));
+	if(option==1) {
+		crearUsuario();
+	}else if(option==2) {
+		int opcion2  = Integer.parseInt(input("¿Que desea hacer? 1. Agregar Empleado o 2.Eliminar Empleado\n"));
+	    if (opcion2 == 1) {
+	    	agregarEmpleado();
+	    }else if (opcion2 == 2) {
+	    	eliminarEmpleado();
+	    }
+	}
 }
  
  
- 
- 
- 
- public static void main(String[] args) throws ParseException {
+ private void eliminarEmpleado() {
+	   System.out.println("\n*******ELIMINAR EMPLEADO****************\n");
+	   System.out.println("Por favor llene el formulario: \n");
+	  
+	   String nombre = input("Nombre: ");
+	   String sede = input("Sede: ");
+	   
+	   for ( Sede sed : listaSedes) {
+           if (sed.getNombre().equals(sede)){
+        	   for ( Empleado Emple :  sed.getEmpleados()) {
+                   if (Emple.getNombre().equals(nombre)){
+                	   sed.getEmpleados().remove(Emple);
+                   }
+               }
+        	   
+  
+           }
+       }
+	   
+	   System.out.println("Empleado Eliminado exitosamente \n");
+	   
+}
+
+private void agregarEmpleado() {
+       
+	   System.out.println("\n*******CREAR EMPLEADO***************\n");
+	   System.out.println("Por favor llene el formulario: \n");
+	   String nombre = input("Nombre: ");
+	   String sede = input("Sede: ");
+	   String usuario = input("Digite el nombre de usuario: ");
+	   String contraseña = input("Digite su contraseña ¡NO OLVIDAR!: ");
+	   
+	   Empleado worker = new Empleado(nombre, sede, usuario, contraseña, "Empleado");
+	   
+	   for ( Sede sed : listaSedes) {
+           if (sed.getNombre().equals(sede)){
+        	   sed.getEmpleados().add(worker);
+           }
+       }
+	   
+	   System.out.println("Empleado Agregado exitosamente \n");
+}
+
+private void crearUsuario() {
+	 
+	   System.out.println("\n*******CREACION DE USUARIO****************\n");
+	   System.out.println("Por favor llene el formulario: \n");
+	   
+	   String nombre = input("Nombre: ");
+	   String nacionalidad = input("Nacionalidad: ");
+	   String telefono = input("Telefono: ");
+	   String fechaNac = input("Fecha de Nacimiento: ");
+	   String usuario = input("Digite el nombre de usuario: ");
+	   String contraseña = input("Digite su contraseña ¡NO OLVIDAR!: ");
+	   
+	   
+	   Cliente cliente = new Cliente(nombre, nacionalidad, telefono, fechaNac,usuario, contraseña, "Cliente", null);
+	   listaClientes.add(cliente);
+	   
+	   System.out.println("Cliente Agregado Exitosamente \n");
+}
+
+public static void main(String[] args) throws ParseException {
 	 
 	 EmpresaAlquilerVehiculos programa = new EmpresaAlquilerVehiculos();
 	 ControllerCarga control = new ControllerCarga();
