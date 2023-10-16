@@ -2,6 +2,8 @@ package logica;
 
 import java.util.Date;
 
+import consola.EmpresaAlquilerVehiculos;
+
 public class Empleado  extends UsuarioGenerico{
 	
 	private String nombre;
@@ -34,9 +36,31 @@ public class Empleado  extends UsuarioGenerico{
 		
 	}
 	public void devolucionCocheCliente(Reserva reserva) {
+		Vehiculo vehiculoReserva = reserva.getVehiculo();
 		reserva.setVehiculoRecogido(false);
-		reserva.getVehiculo().setFechaInicio(null);	
-		reserva.getVehiculo().setFechaFinal( null);
+		vehiculoReserva.setFechaInicio(null);	
+		vehiculoReserva.setFechaFinal( null);
+		vehiculoReserva.setAlquilado(false);
+		
 		}
+	public Reserva crearReserva(Vehiculo vehiculo,Date fechaInicio,Date FechaFinal,double precio30 ,double precioRestante,
+			String sedeDevolver,String sedeRecoger,
+			int numerotarjeta,String nombreCliente) 
+	{
+		
+		  Reserva reserva = new Reserva(EmpresaAlquilerVehiculos.getNumeroReservaInteger(),vehiculo.getCategoria().getNombreCategoria(),
+				  fechaInicio,FechaFinal,precio30,precioRestante,
+				  precio30+precioRestante,numerotarjeta,
+				  sedeRecoger,sedeDevolver,null,false,vehiculo,nombreCliente);	  
+		  		return reserva;
 }
+	
+	public void revisarEstadoVehiculo(Vehiculo vehiculoReserva,boolean funcional) {
+		if(funcional)
+		vehiculoReserva.setFuncional(true);
+		else {
+		vehiculoReserva.setFuncional(false);
+		}
+	}
+	}
 

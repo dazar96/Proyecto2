@@ -74,7 +74,18 @@ public class ControladorReserva {
 		double precioTotal = valorSinSeguro + precioSeguro;
 		double precio30 = precioTotal*0.3;
 		double precioRestante = precioTotal*0.7;
-		Reserva reserva = cliente.crearReserva(vehiculo,vehiculo.getFechaInicio(), vehiculo.getFechaFinal(), precio30, precioRestante,sederecoger,sedeDevolver);
+		Reserva reserva = cliente.crearReserva(vehiculo,vehiculo.getFechaInicio(), vehiculo.getFechaFinal(), precio30, precioRestante,sedeDevolver,sederecoger);
+		return reserva;
+	}
+	
+	public Reserva CrearReservaACliente(Cliente cliente,double valorSinSeguro ,
+			AdministradorGeneral administradorGeneral,boolean conSeguro,
+			Vehiculo vehiculo,String sedeDevolver,String sederecoger,ArrayList<Seguro> seguros,ArrayList<Integer> posiciones,Empleado empleado) {
+		double precioSeguro = administradorGeneral.administrarSeguro(seguros,posiciones,conSeguro,vehiculo);
+		double precioTotal = valorSinSeguro + precioSeguro;
+		double precio30 = precioTotal*0.3;
+		double precioRestante = precioTotal*0.7;
+		Reserva reserva = empleado.crearReserva(vehiculo,vehiculo.getFechaInicio(), vehiculo.getFechaFinal(), precio30, precioRestante,sedeDevolver,sederecoger,cliente.getMedioDePago().getNumeroTarjeta(),cliente.getNombre());
 		return reserva;
 	}
 	
