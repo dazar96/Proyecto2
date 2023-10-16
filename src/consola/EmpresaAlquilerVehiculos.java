@@ -373,8 +373,8 @@ private String login(String usuario,String contrasenia) {
 	 listaVehiculo = control.cargarVehiculos(categoriaVehiculo,"./data/vehiculos.txt\\");
 	 listaAdministradorLocal = control.cargarAdministradorLocal("./data/administradorLocal.txt\\");
 	 administradorGeneral = control.cargarAdministradorGeneral("./data/administradorGeneral.txt\\");
-	 listaSedes = control.cargarSedes(listaEmpleados, listaVehiculo, listaAdministradorLocals, "./data/sedes.txt\\");
-	 listaUsuarioGenericos = control.cargaUsuarios(listaEmpleados, listaClientes, listaAdministradorLocals, administradorGeneral);
+	 listaSedes = control.cargarSedes(listaEmpleados, listaVehiculo, listaAdministradorLocal, "./data/sedes.txt\\");
+	 listaUsuarioGenericos = control.cargaUsuarios(listaEmpleados, listaClientes, listaAdministradorLocal, administradorGeneral);
      }
  
  
