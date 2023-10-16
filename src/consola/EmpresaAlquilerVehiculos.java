@@ -34,7 +34,7 @@ public class EmpresaAlquilerVehiculos {
   private ArrayList<CategoriaVehiculo> categoriaVehiculo;
   private AdministradorGeneral administradorGeneral;
   private ArrayList<Vehiculo> listaVehiculo ;
-  private ArrayList<AdministradorLocal> listaAdministradorLocals;
+  private ArrayList<AdministradorLocal> listaAdministradorLocal;
   private ArrayList<Reserva> reservas = new ArrayList<Reserva>();
   private ArrayList<Seguro> seguros = new ArrayList<Seguro>();
   public static Integer numeroReservaInteger = 0 ;
@@ -68,15 +68,16 @@ public class EmpresaAlquilerVehiculos {
 		
 	 } else {
 		System.out.println("Entrando al sistema.....");
+		
 		if(tipoUsuario.equalsIgnoreCase("Cliente")){ 
 			Cliente clienteLogin = null;
 			for (Cliente cliente : listaClientes) {
 				if(cliente.getUsuario().equals(usuario)&& cliente.getContraseña().equals(contrasenia)) 
 					clienteLogin = cliente;
 					break;
-				
 			}
 			programaCliente(clienteLogin);
+			
 		}else if(tipoUsuario.equalsIgnoreCase("Empleado")) {
 			Empleado empleadoLogin = null;
 			for (Empleado empleado : listaEmpleados) {
@@ -84,14 +85,25 @@ public class EmpresaAlquilerVehiculos {
 					empleadoLogin = empleado;
 					break;
 			}programaEmpleado(empleadoLogin);
+			
 		} else if (tipoUsuario.equalsIgnoreCase("Administrador General")) {
 			programaAdministradorGeneral(administradorGeneral);
+		}
+		
+		else if(tipoUsuario.equalsIgnoreCase("Administrador Local")) {
+			AdministradorLocal administradorLocalLogin = null;
+			for (AdministradorLocal AdmiL : listaAdministradorLocal) {
+				if(AdmiL.getUsuario().equals(usuario)&& AdmiL.getContraseña().equals(contrasenia)) 
+					administradorLocalLogin = AdmiL;
+					break;
+			}programaAdministradorLocal(administradorLocalLogin);
 		}
 		
 	}
 	 
  }
- private String login(String usuario,String contrasenia) {
+
+private String login(String usuario,String contrasenia) {
 	 
 	 for (UsuarioGenerico usuarioGenerico : listaUsuarioGenericos) {
 		String userFor = usuarioGenerico.getUsuario();
@@ -327,6 +339,11 @@ public class EmpresaAlquilerVehiculos {
  } 
 
  
+ private void programaAdministradorLocal(AdministradorLocal administradorLocalLogin) {
+	// TODO Auto-generated method stub
+	
+}
+ 
  
  
  
@@ -354,7 +371,7 @@ public class EmpresaAlquilerVehiculos {
 	 listaEmpleados = control.cargarEmpleados("./data/empleados.txt\\");
 	 categoriaVehiculo = control.cargarCategoria("./data/tarifas.txt\\\\");
 	 listaVehiculo = control.cargarVehiculos(categoriaVehiculo,"./data/vehiculos.txt\\");
-	 listaAdministradorLocals = control.cargarAdministradorLocal("./data/administradorLocal.txt\\");
+	 listaAdministradorLocal = control.cargarAdministradorLocal("./data/administradorLocal.txt\\");
 	 administradorGeneral = control.cargarAdministradorGeneral("./data/administradorGeneral.txt\\");
 	 listaSedes = control.cargarSedes(listaEmpleados, listaVehiculo, listaAdministradorLocals, "./data/sedes.txt\\");
 	 listaUsuarioGenericos = control.cargaUsuarios(listaEmpleados, listaClientes, listaAdministradorLocals, administradorGeneral);
