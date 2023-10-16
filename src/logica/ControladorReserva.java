@@ -2,15 +2,10 @@ package logica;
 
 import java.text.ParseException;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import logica.Tarifario;
-import logica.Vehiculo;
 
 public class ControladorReserva {
-	
-	private Tarifario tarifario;
 	
 	
 	//Verificar datos ingresados por el usuario
@@ -44,23 +39,19 @@ public class ControladorReserva {
 							
 		 				
 					}
-				 
-			 
-			 
-	
 		 }else {
 			return null;
 		}
 		return null;
-		//Calcula total del precio de la reserva sin seguro
-	
+		
+		
+		
+		//Calcula el total del precio de la reserva sin seguro
 	} public  Double ValorReservaSinSeguro(Vehiculo vehiculo,ArrayList<Sede> sedes,String sedeDevuelta) {
 		Tarifario tarifario = vehiculo.getCategoria().getTarifario();
 		Sede sede = buscarSedePorNombre(sedeDevuelta, sedes);
 		if(sede==null) 
 			return null;
-		
-		
 		double precioCategoria = vehiculo.getCategoria().getTarifaDiaria();
 		long tiempodiferencia=vehiculo.getFechaInicio().getTime()-vehiculo.getFechaFinal().getTime();
 		long diasDiferencia = tiempodiferencia / (24 * 60 * 60 * 1000);
@@ -71,14 +62,11 @@ public class ControladorReserva {
 		if(!tarifario.TemporadaAlta(vehiculo.getFechaInicio(), vehiculo.getFechaFinal())) {
 			tarifario.setAumentoTemporada(0);
 		}
-		 Double tarifaTotalSinSeguro=(precioCategoria*numeroDias)+tarifario.getAumentoTemporada()+tarifario.getValorExtraOtraSede();
-		 
-		 
-		 
-		 
-		
-		return tarifaTotalSinSeguro;
-	} //cliente.crearReserva();
+		 Double tarifaTotalSinSeguro=(precioCategoria*numeroDias)*(tarifario.getAumentoTemporada())+tarifario.getValorExtraOtraSede();
+		 return tarifaTotalSinSeguro;
+	} 
+	
+	
 	public Reserva CrearReservaCliente(Cliente cliente,double valorSinSeguro ,
 			AdministradorGeneral administradorGeneral,boolean conSeguro,
 			Vehiculo vehiculo,String sedeDevolver,String sederecoger,ArrayList<Seguro> seguros,ArrayList<Integer> posiciones) {
@@ -90,14 +78,7 @@ public class ControladorReserva {
 		return reserva;
 	}
 	
-	public Vehiculo alquilarVehiculo() {
-		return null;
-	}
-	
-	
-	public double getTarifaConductorExtra() {
-		return tarifario.getValorExtra2Conduc();
-	}
+
 	public Sede buscarSedePorNombre(String nombreSede, ArrayList<Sede> sedes) {
 		Sede sedeABuscarSede=null;	
 		for (Sede sede : sedes) {

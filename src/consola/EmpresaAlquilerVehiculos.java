@@ -36,6 +36,9 @@ public class EmpresaAlquilerVehiculos {
   private ArrayList<Vehiculo> listaVehiculo ;
   private ArrayList<Reserva> reservas = new ArrayList<Reserva>();
   private ArrayList<Seguro> seguros = new ArrayList<Seguro>();
+  public static Integer numeroReservaInteger = 0 ;
+  
+  
   private void ejecutarPrograma() throws ParseException {
 	 //Pruebas
 	 UsuarioGenerico usuarioGenerico = new UsuarioGenerico("1", "1", "cliente");
@@ -135,6 +138,7 @@ public class EmpresaAlquilerVehiculos {
 		
 		double valorSinSeguro= controllerEmpresa.ValorReservaSinSeguro(vehiculo,listaSedes,sedeDevolver);
 		reservas.add(controllerEmpresa.CrearReservaCliente(clienteLogin,valorSinSeguro,administradorGeneral,conSeguro, vehiculo,nombreSede,sedeDevolver,seguros,segurosPosiciones));
+		numeroReservaInteger+=1;
 		System.out.println("Creando la reserva... ");
 		Thread.sleep(100);
 		System.out.println("Su valor a pagar es"+reservas.get(reservas.size()-1).getPrecio30());
@@ -153,7 +157,6 @@ public class EmpresaAlquilerVehiculos {
 		 Empleado empleadoSede = null;
 		 String categoria=input("Ingrese el tipo de vehiculo que desea ");
 		 String nombreSede = input("Ingrese la sede en la que se encuentra");
-		 String fechaI= input("Ingrese la fecha de inicio formato: yyyy-MM-dd HH:mm");
 		 String fechaF= input("Ingrese la fecha de inicio formato: yyyy-MM-dd HH:mm"); 
 		 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		 Date fechaInicio = new Date();
@@ -176,6 +179,7 @@ public class EmpresaAlquilerVehiculos {
 		 double valorSinSeguro= controllerEmpresa.ValorReservaSinSeguro(vehiculo,listaSedes,sedeDevolver);
 		 Reserva alquiler;
 		 alquiler =(controllerEmpresa.CrearReservaCliente(clienteLogin,valorSinSeguro,administradorGeneral,conSeguro, vehiculo,nombreSede,sedeDevolver,seguros,segurosPosiciones));
+		 numeroReservaInteger+=1;
 		 reservas.add(alquiler);
 		 
 		 for (Sede sedess: listaSedes) {
@@ -193,7 +197,7 @@ public class EmpresaAlquilerVehiculos {
 			 int numero  = Integer.parseInt(input("Ingrese el numero de su liciencia "));
 			 String paisExpedicion = input("Ingrese el pais de expedicion de la licencia");
 			 Date  fechaVencimiento =  dateFormat.parse(input("Ingrese la fecha de vencimiento de su licencia en formato: dd/MM/yyyy")); 
-			Double valorTotalDouble = controllerEmpresa.getTarifaConductorExtra();
+			Double valorTotalDouble = alquiler.getVehiculo().getCategoria().getTarifario().getValorExtra2Conduc();
 			valorConductorExtra = empleadoSede.agregarConductor(valorTotalDouble,alquiler,numero,paisExpedicion,fechaVencimiento);
 			 }
 		 empleadoSede.administarRecogidaCliente(alquiler);
@@ -229,7 +233,7 @@ public class EmpresaAlquilerVehiculos {
 		System.out.println( i + seguro.getnombre()+":"+seguro.getPrecio());
 	}
  }
- /*
+
  private void programaAdministradorGeneral (AdministradorGeneral administradorGeneral) {
 	menuAdministradorGeneral();
 	String nombreSedeString = input("Ingrese el nombre de la sede donde se registrara el coche");
@@ -239,22 +243,22 @@ public class EmpresaAlquilerVehiculos {
 	String color = input("Ingrese el color del vehiculo");
 	String tipoTransmision = input("Tipo de transmision");
 	String categoriaVehiculo = input("Categoria del vehiculo");
-	Vehiculo vehiculo = new Vehiculo(0, false, null, capacidad, placa,
+	Vehiculo vehiculo = new Vehiculo(0, false, null,nombreSedeString, capacidad, placa,
 			                         modelo, color, tipoTransmision, null, null,
 			                         null, false, false);
-	//Faltan cosas
+	// Faltan cosas
  }
- */
+ 
+
+ 
  private void programaEmpleado(Empleado empleadoLogin) throws ParseException {
 	 menuEmpleado();
-	 Cliente clienteInterno;
 	 Reserva reservaClienteInterno=null;
 	 int option = Integer.parseInt(input("Ingrese la opcion que desea"));
 	 if(option == 1) {
-		 String nombreCliente = input("Ingrese el nombre del cliente");
-		 clienteInterno = buscarClienteSistema(nombreCliente,  listaClientes);
+		 Integer numeroReserva = Integer.parseInt(input("Ingrese el identificador de reserva del cliente"));
 		for (Reserva reserva : reservas) {
-			if(nombreCliente.equals(reserva.getIdentificador()));{
+			if(numeroReserva.equals(reserva.getIdentificador()));{
 			reservaClienteInterno = reserva;}
 		}
 		 double valorAdicional = 0;
@@ -262,7 +266,7 @@ public class EmpresaAlquilerVehiculos {
 		 if(adicional.equals("1")) {
 			int numero = Integer.parseInt(input("Numero de licencia"));
 			String pais = input("Pais donde fue radicada");
-			valorAdicional = controllerEmpresa.getTarifaConductorExtra();
+			valorAdicional = reservaClienteInterno.getVehiculo().getCategoria().getTarifario().getValorExtra2Conduc();
 			SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
 			Date fechaVencimiento = formatoFecha.parse(input("Fecha de vencimiento de la licencia yyyy-MM-dd"));
 			
@@ -277,11 +281,9 @@ public class EmpresaAlquilerVehiculos {
 		 System.out.println("Pago exitoso");
 	 }else if(option==2) {
 		 Reserva reservaClienteLogin=null;
-		 Cliente cliente;
-		 String nombreCliente = input("Nombre del cliente");
-		 cliente = buscarClienteSistema(nombreCliente, listaClientes);
+		 Integer numeroReserva = Integer.parseInt(input("Ingrese el identificador de reserva del cliente"));
 		 for (Reserva reservasCliente : reservas) {
-				if(cliente.getNombre().equals(reservasCliente.getIdentificador())) 
+				if(numeroReserva.equals(reservasCliente.getIdentificador())) 
 					reservaClienteLogin = reservasCliente; 
 	 }   empleadoLogin.devolucionCocheCliente(reservaClienteLogin);
 	 System.out.println("El carro fue devuelto con exito");
@@ -326,6 +328,9 @@ public class EmpresaAlquilerVehiculos {
  
  
  
+ public static Integer getNumeroReservaInteger() {
+	return numeroReservaInteger;
+ }
 public String input(String mensaje)
 	{
 		try

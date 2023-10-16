@@ -2,7 +2,9 @@ package logica;
 
 import java.util.ArrayList;
 import java.util.Date;
-import logica.Reserva;
+
+import consola.EmpresaAlquilerVehiculos;
+
 public  class Cliente extends UsuarioGenerico {
  
  public String nombre;
@@ -34,7 +36,7 @@ public  class Cliente extends UsuarioGenerico {
 
 
 public Reserva crearReserva(Vehiculo vehiculo,Date fechaInicio,Date FechaFinal,double precio30 ,double precioRestante,String sedeDevolver,String sedeRecoger) {
-	  Reserva reserva = new Reserva(nombre,vehiculo.getCategoria().getNombreCategoria(),
+	  Reserva reserva = new Reserva(EmpresaAlquilerVehiculos.getNumeroReservaInteger(),vehiculo.getCategoria().getNombreCategoria(),
 			  fechaInicio,FechaFinal,precio30,precioRestante,
 			  precio30+precioRestante,medioDePago.getNumeroTarjeta(),
 			  sedeRecoger,sedeDevolver,null,false,vehiculo);	  

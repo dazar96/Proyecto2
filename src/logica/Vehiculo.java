@@ -41,6 +41,8 @@ public class Vehiculo {
 		this.funcional = funcional;
 		
 	}
+	
+	
 	//Getters and Setters
 	
 	public CategoriaVehiculo getCategoria() {
@@ -67,20 +69,10 @@ public class Vehiculo {
 	public void setConSeguro(boolean conSeguro) {
 		this.conSeguro = conSeguro;
 	}
-	
-
-
-// Revisar esto
 	public String getSede()
     {
     	return sedeInicial;
-    }
-	
-
-	//Constructor Mateo
-	//Getters and Setters
-	
-	
+    }	
 	public int getidVehiculo() {
 		return idVehiculo;
 	}
@@ -111,6 +103,9 @@ public class Vehiculo {
 	
 	public String getTipoTransmision() {
 		return tipoTransmision;
+	}
+	public void setFuncional(boolean funcional) {
+		this.funcional = funcional;
 	}
 	
 	

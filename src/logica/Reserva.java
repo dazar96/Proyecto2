@@ -5,7 +5,7 @@ import java.util.Date;
 
 
 public class Reserva {
-	private String identificador;
+	private Integer identificador;
 	private String categoriaVehiculo;
 	private Date FechaInicio ;
 	private Date FechaFinal ;
@@ -19,7 +19,7 @@ public class Reserva {
 	private boolean  vehiculoRecogido;
 	private Vehiculo vehiculo;
 	
-	public Reserva(String identificador, String categoriaVehiculo, Date fechaInicio, Date fechaFinal, double precio30,
+	public Reserva(Integer identificador, String categoriaVehiculo, Date fechaInicio, Date fechaFinal, double precio30,
 			double precioRestante,double precioTotal,int numeroTarjeta,
 			String sedenombreRecoger,String sedeNombreDevolver ,
 			ConductorAdicional conductorAdicional, boolean vehiculoRecogido,Vehiculo vehiculo) {
@@ -39,7 +39,7 @@ public class Reserva {
 		this.vehiculo = vehiculo;
 	}
 
-	public String getIdentificador() {
+	public Integer getIdentificador() {
 		return identificador;
 	}
 

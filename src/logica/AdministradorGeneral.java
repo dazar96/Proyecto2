@@ -3,10 +3,7 @@ package logica;
 import java.util.ArrayList;
 
 public class AdministradorGeneral extends UsuarioGenerico {
-	
-	private ArrayList<Boolean> bols;
 	private Seguro seguro;
-
 	private String nombre;
 	
  public AdministradorGeneral(String nombre, String usuario, String contraseña, String tipoUsuario) {
@@ -35,6 +32,11 @@ public void modificarInventario() {
 	 
 	 
  }
+ public Seguro crearSeguro(String nombreString , int precio) {
+	 seguro = new Seguro(nombre, 0);
+	 return seguro;
+ }
+ 
  
  public void registrarCompraVehiculo() {
 	 
