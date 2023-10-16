@@ -19,7 +19,7 @@ public  class Cliente extends UsuarioGenerico {
 	{
 	  super(usuario, contraseña, tipoUsuario);
 		this.nombre = nombre;
-		this.nombre = nacionalidad;
+		this.nacionalidad = nacionalidad;
 		this.telefono = telefono;
 		this.fechaNac = fechaNacimiento;
 		this.reservas = reservas;
