@@ -13,6 +13,7 @@ import logica.Cliente;
 import logica.Empleado;
 import logica.Sede;
 import logica.Tarifario;
+import logica.UsuarioGenerico;
 import logica.Vehiculo;
 
 public class ControllerCarga {
@@ -320,6 +321,28 @@ public class ControllerCarga {
 		}
 		return vcArrayList;
 	}
+    
+ public ArrayList<UsuarioGenerico> cargaUsuarios(ArrayList<Empleado> LEmpleado,ArrayList<Cliente> listaClientes,ArrayList<AdministradorLocal> lAdmiLocal,AdministradorGeneral LAdmiGene) {
+
+        ArrayList<UsuarioGenerico> listaUsuario = new java.util.ArrayList<>();
+
+        for ( Empleado lEmpleado : LEmpleado) {
+            listaUsuario.add(lEmpleado);
+        }
+
+        for ( Cliente Cliente : listaClientes) {
+            listaUsuario.add(Cliente);
+        }
+
+        for ( AdministradorLocal LAdminLocal : lAdmiLocal) {
+            listaUsuario.add(LAdminLocal);
+        }
+
+        listaUsuario.add(LAdmiGene);
+
+
+        return listaUsuario;
+    }
     
 }
 

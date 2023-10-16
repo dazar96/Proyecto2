@@ -243,7 +243,11 @@ public class EmpresaAlquilerVehiculos {
 	String color = input("Ingrese el color del vehiculo");
 	String tipoTransmision = input("Tipo de transmision");
 	String categoriaVehiculo = input("Categoria del vehiculo");
-	Vehiculo vehiculo = new Vehiculo(0, false, null,nombreSedeString, capacidad, placa,
+	Sede sede = controllerEmpresa.buscarSedePorNombre(nombreSedeString, listaSedes);
+	for (CategoriaVehiculo categoriaVehiculo2 : this.categoriaVehiculo) {
+		
+	}
+	Vehiculo vehiculo = new Vehiculo(0, false, sede,nombreSedeString, capacidad, placa,
 			                         modelo, color, tipoTransmision, null, null,
 			                         null, false, false);
 	// Faltan cosas
@@ -321,6 +325,7 @@ public class EmpresaAlquilerVehiculos {
 	 ArrayList<AdministradorLocal> LAdmiLocal = control.cargarAdministradorLocal("./data/administradorLocal.txt\\");
 	 administradorGeneral = control.cargarAdministradorGeneral("./data/administradorGeneral.txt\\");
 	 listaSedes = control.cargarSedes(LEmpleado, listaVehiculo, LAdmiLocal, "./data/sedes.txt\\");
+	 listaUsuarioGenericos = control.cargaUsuarios(LEmpleado, listaClientes, LAdmiLocal, administradorGeneral);
      }
  
  
