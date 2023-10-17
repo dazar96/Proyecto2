@@ -91,10 +91,21 @@ public class Persistencia {
 				int numeroTarjeta = Integer.parseInt(partes[7]);
 				String sedeNombreRecoger = partes[8];
 				String sedeNombreDevolver = partes[9];
-				int numeroLicencia = Integer.parseInt(partes[10]);
+				int numeroLicencia=0;
+				if(partes[10].equals("")) {
+					 numeroLicencia = 0;
+					
+				}else {
+					 numeroLicencia = Integer.parseInt(partes[10]);	
+				}
 				String paisExpedicion = partes[11];
 				String fechaV = partes[12];
-				Date fechaVencimiento =format.parse(fechaV);
+				Date fechaVencimiento;
+				if(fechaV.equals("")) {
+					fechaVencimiento = null;
+				}else {
+					 fechaVencimiento =format.parse(fechaV);
+				}
 				// Se inicializa licencia y conductor adicional
 				ConductorAdicional conductor = null;
 				if(numeroLicencia != 0) {
@@ -115,6 +126,7 @@ public class Persistencia {
 				Reserva perReserva = new Reserva(identificador, categoriaVehiculo, fechaInicio,
 						fechaFinal, precio30, precioRestante, precioTotal,numeroTarjeta,
 						sedeNombreRecoger,sedeNombreDevolver,conductor,vehiculoRecogido,vehiculo, nombrePersona);
+				
 				reservas.add(perReserva);
 			}
 		}

@@ -72,7 +72,7 @@ public class ControladorReserva {
 		if(!tarifario.TemporadaAlta(vehiculo.getFechaInicio(), vehiculo.getFechaFinal())) {
 			tarifario.setAumentoTemporada(0);
 		}
-		 Double tarifaTotalSinSeguro=(precioCategoria*numeroDias)*(tarifario.getAumentoTemporada())+tarifario.getValorExtraOtraSede();
+		 Double tarifaTotalSinSeguro=(precioCategoria*numeroDias)+(tarifario.getAumentoTemporada())+tarifario.getValorExtraOtraSede();
 		 return tarifaTotalSinSeguro;
 	} 
 	
@@ -95,7 +95,7 @@ public class ControladorReserva {
 		double precioTotal = valorSinSeguro + precioSeguro;
 		double precio30 = precioTotal*0.3;
 		double precioRestante = precioTotal*0.7;
-		Reserva reserva = empleado.crearReserva(vehiculo,vehiculo.getFechaInicio(), vehiculo.getFechaFinal(), precio30, precioRestante,sedeDevolver,sederecoger,cliente.getMedioDePago().getNumeroTarjeta(),cliente.getNombre());
+		Reserva reserva = empleado.crearReserva(vehiculo,vehiculo.getFechaInicio(), vehiculo.getFechaFinal(), precio30, precioRestante,sedeDevolver,sederecoger,cliente.getNumeroTarjeta(),cliente.getNombre());
 		return reserva;
 	}
 	

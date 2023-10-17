@@ -39,7 +39,7 @@ public class Reserva {
 		this.conductorAdicional=conductorAdicional;
 		this.vehiculoRecogido = vehiculoRecogido;
 		this.vehiculo = vehiculo;
-		setIdentificadorVehiculo();
+		
 	}
 
 	public Integer getIdentificador() {
@@ -101,10 +101,7 @@ public class Reserva {
 		return vehiculoRecogido;
 	}
 	
-	public void setIdentificadorVehiculo()
-	{
-		this.vehiculo.getIdVehiculo();
-	}
+
 	
 	public int getIdVehiculo() {
 		return idVehiculo;

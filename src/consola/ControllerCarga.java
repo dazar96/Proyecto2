@@ -121,13 +121,14 @@ public class ControllerCarga {
 				String paisExpedicion = partes[8];
 				String fechaVencimientoLicencia = partes[9];
 				
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		        Date fechau =format.parse(fechaVencimientoLicencia);
 				
 				LicienciaConducion licencia = new LicienciaConducion(numeroLicencia,paisExpedicion, fechau);
 				
 				Cliente perCliente = new Cliente(nombre, nacionalidad, telefono, fechaNacimiento, usuario, contraseña, tipoUsuario,null,licencia);
 				clientes.add(perCliente);
+				
 			}
 		}
 		catch (FileNotFoundException e)

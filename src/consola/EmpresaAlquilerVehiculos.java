@@ -4,7 +4,6 @@ package consola;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.invoke.StringConcatFactory;
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.ParseException;
@@ -19,9 +18,7 @@ import logica.Empleado;
 import logica.Reserva;
 import logica.Sede;
 import logica.CategoriaVehiculo;
-import logica.Cliente;
 import logica.ControladorReserva;
-import logica.AdministradorLocal;
 import logica.Seguro;
 
 import logica.UsuarioGenerico;
@@ -44,14 +41,7 @@ public class EmpresaAlquilerVehiculos {
   
   private void ejecutarPrograma() throws ParseException {
 	 //Pruebas
-	 UsuarioGenerico usuarioGenerico = new UsuarioGenerico("1", "1", "cliente");
-	 listaUsuarioGenericos.add(usuarioGenerico);
-	 Seguro seguro = new Seguro("a",1);
-	 Seguro seguro1 = new Seguro("b",121);
-	 Seguro seguro2 = new Seguro("c",141);
-	 seguros.add(seguro);
-	 seguros.add(seguro1);
-	 seguros.add(seguro2);
+
 	 //Pruebas
 	 System.out.println("Bienvenido a la empresa");
 	 String usuario=input("Usuario");
@@ -74,11 +64,12 @@ public class EmpresaAlquilerVehiculos {
 		if(tipoUsuario.equalsIgnoreCase("Cliente")){ 
 			Cliente clienteLogin = null;
 			for (Cliente cliente : listaClientes) {
-				if(cliente.getUsuario().equals(usuario)&& cliente.getContraseña().equals(contrasenia)) 
+				
+				if(cliente.getUsuario().equals(usuario)&& cliente.getContraseña().equals(contrasenia)) {
 					clienteLogin = cliente;
-					break;
+					break;}
 			}
-			programaCliente(clienteLogin);
+			programaCliente(clienteLogin);guardarycerra();
 			
 		}else if(tipoUsuario.equalsIgnoreCase("Empleado")) {
 			Empleado empleadoLogin = null;
@@ -86,10 +77,11 @@ public class EmpresaAlquilerVehiculos {
 				if(empleado.getUsuario().equals(usuario)&& empleado.getContraseña().equals(contrasenia)) 
 					empleadoLogin = empleado;
 					break;
-			}programaEmpleado(empleadoLogin);
+			}programaEmpleado(empleadoLogin);guardarycerra();
 			
 		} else if (tipoUsuario.equalsIgnoreCase("Administrador General")) {
 			programaAdministradorGeneral(administradorGeneral);
+			guardarycerra();
 		}
 		
 		else if(tipoUsuario.equalsIgnoreCase("Administrador Local")) {
@@ -98,7 +90,7 @@ public class EmpresaAlquilerVehiculos {
 				if(AdmiL.getUsuario().equals(usuario)&& AdmiL.getContraseña().equals(contrasenia)) 
 					administradorLocalLogin = AdmiL;
 					break;
-			}programaAdministradorLocal(administradorLocalLogin);
+			}programaAdministradorLocal(administradorLocalLogin);guardarycerra();
 		}
 		
 	}
@@ -221,30 +213,36 @@ private String login(String usuario,String contrasenia) {
 		 System.err.println("Sus datos fueron validados ");
 		 System.err.println("Pago exitoso ");
 		 System.out.println("Las llaves estan encima del vidrio");
-	 }
+	 }else if (option==3) {
+		guardarycerra();
+	}
 		 
 	 }
  private void MenuCliente() {
 	 System.out.println("1.Reservar vehiculo");
 	 System.out.println("2 Alquilar vehiculo");
+	 System.out.println("3 Cerrar la aplicacion");
 	 
  }
  private void menuEmpleado() {
 	 System.out.println("1.Recoger vehiculo cliente ");
 	 System.out.println("2.Devolucion del vehiculo cliente");
 	 System.out.println("3 Crear reserva cliente");
+	 System.out.println("4 Cerrar la aplicacion");
 	 
  }
  private void menuAdministradorGeneral (){ 
 
 	 System.out.println("1 Registrar compra de un nuevo vehiculo");
 	 System.out.println("2 Dar de baja un vehiculo");
+	 System.out.println("3 Cerrar la aplicacion");
  }
  
  private void menuAdministradorLocal(){ 
 
 	 System.out.println("1 Creae Usuario a Cliente");
 	 System.out.println("2 Administrar informacion de empreados");
+	 System.out.println("3 Cerrar la aplicacion");
  }
  
  private void mostrarSeguros() {
@@ -263,8 +261,14 @@ private String login(String usuario,String contrasenia) {
 		modificarVehiculoAdministradorGeneral();
 	}else if(option==2) {
 		darDeBajaVehiculoAdmin();
+	}else if(option==3) {
+		guardarycerra();
 	}
 	
+ }
+ 
+ private void guardarycerra() {
+	 guardarReservas();
  }
  private void darDeBajaVehiculoAdmin(){
 	 
@@ -330,13 +334,7 @@ private String login(String usuario,String contrasenia) {
 		 System.out.println("El carro se lavara en unos minutos");
 		 
 	 }else {
-		 String numeroTarjeta =Integer.toString(reservaClienteLogin.getNumeroTarjeta());
-		 int longitud = numeroTarjeta.length();
-		 int ultimosDigitosVisibles = 4;
-		 String asteriscos = "*".repeat(longitud - ultimosDigitosVisibles);
-		 String ultimosDigitos = numeroTarjeta.substring(longitud - ultimosDigitosVisibles);
-		 String numeroOculto = asteriscos + ultimosDigitos;
-		 System.out.println("Generando cobro a la tarjeta"+numeroOculto+"del cliente");
+		 System.out.println("Generando cobro a la tarjeta del cliente");
 	 }
 	 
 	  
@@ -379,11 +377,14 @@ private String login(String usuario,String contrasenia) {
 		System.out.println("Valor a pagar es"+reservas.get(reservas.size()-1).getPrecio30());
 		System.out.println("Se hizo el cobro a la tarjeta del 30% del valor de la reserva");
 		
+		
 		 } catch (ParseException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}else if (option==4) {
+		guardarycerra();
 	}
  } 
 
@@ -415,6 +416,10 @@ private String login(String usuario,String contrasenia) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	
+			System.out.println("Verificando los datos del cliente");
+			 System.out.println("La tarifa total a pagar del cliente son"+ reservaClienteInterno.getPrecioRestante());
+			System.out.println("Generando cobro a la tarjeta.....");
+			 System.out.println("Pago exitoso");
 		 }	  
  }
  
@@ -431,6 +436,8 @@ private String login(String usuario,String contrasenia) {
 		    }else if (opcion2 == 2) {
 		    	eliminarEmpleado();
 		    }
+		}else if (option==3) {
+			guardarycerra();
 		}
 	}
  
@@ -509,7 +516,10 @@ public static void main(String[] args) throws ParseException {
 	 EmpresaAlquilerVehiculos programa = new EmpresaAlquilerVehiculos();
 	 ControllerCarga control = new ControllerCarga();
 	 programa.cargaDatos(control);
+	 Persistencia persistencia = new Persistencia();
+	 programa.cargaPersistencia(persistencia, programa);
 	 programa.ejecutarPrograma();
+	 
 }
  
  private Cliente buscarClienteSistema(String nombreCliente,ArrayList<Cliente> clientes) {
@@ -521,6 +531,20 @@ public static void main(String[] args) throws ParseException {
 		}
 	} return null;
  }
+ 
+ private void cargaPersistencia(Persistencia persistencia, EmpresaAlquilerVehiculos self) throws ParseException {
+	ArrayList<Cliente> listaClientesAux;
+	listaClientesAux = persistencia.cargarClientesAgregadosNuevos("./data/persistencia/clientes.txt\\");
+	listaClientes.addAll(listaClientesAux);
+	
+	ArrayList<Reserva> reservasAux;
+	reservasAux = persistencia.cargarReservas("./data/persistencia/reservas.txt\\", self);
+	reservas.addAll(reservasAux);
+	numeroReservaInteger+=reservas.size();
+	
+	//for(i: Cliente)
+}
+ 
  private void cargaDatos(ControllerCarga control) throws ParseException {
 	  
 	 listaClientes = control.cargarClientes("./data/clientes.txt\\");
@@ -535,25 +559,33 @@ public static void main(String[] args) throws ParseException {
  
  public String crearTextoReservas()
  {
+	SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm");
  	String linea = "";
  	for(Reserva reserva: reservas)
  	{
  		linea += reserva.getIdentificador()+";";
  		linea += reserva.getCategoriaVehiculo()+";";
- 		linea += reserva.getFechaInicio()+";";
- 		linea += reserva.getFechaFinal()+";";
+ 		linea += formato.format(reserva.getFechaInicio()) +";";
+ 		linea += formato.format(reserva.getFechaFinal())+";"; 
  		linea += reserva.getPrecio30()+";";
  		linea += reserva.getPrecioRestante()+";";
  		linea += reserva.getPrecioTotal()+";";
  		linea += reserva.getNumeroTarjeta()+";";
  		linea += reserva.getSedeNombreRecoger()+";";
  		linea += reserva.getSedeNombreDevolver()+";";
+ 		if (reserva.getConductorAdicional()!=null) {
+ 			
  		linea += reserva.getConductorAdicional().getLicenciaConducion().getNumeroLicencia()+";";
  		linea += reserva.getConductorAdicional().getLicenciaConducion().getPaisExpedicion()+";";
  		linea += reserva.getConductorAdicional().getLicenciaConducion().getFechaVencimiento()+";";
+ 		
+ 		}else {
+ 			linea+= ";;;";
+ 		}
  		linea += reserva.getVehiculoRecogido()+";";
- 		linea += reserva.getIdVehiculo()+";";
- 		linea += reserva.getNombrePersona()+";";
+ 		linea += reserva.getVehiculo().getIdVehiculo()+";";
+ 		linea += reserva.getNombrePersona();
+ 		linea += "\n";
  	}
  	return linea;
  }
