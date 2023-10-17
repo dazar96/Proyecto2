@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
+import logica.LicienciaConducion;
 import logica.AdministradorGeneral;
 import logica.AdministradorLocal;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import logica.Cliente;
 import logica.Empleado;
 import logica.Reserva;
@@ -417,20 +419,20 @@ private String login(String usuario,String contrasenia) {
  }
  
  
- private void programaAdministradorLocal(AdministradorLocal administradorLocalLogin) {
-	menuAdministradorLocal();
-	int option = Integer.parseInt(input("Ingrese la opcion que desea"));
-	if(option==1) {
-		crearUsuario();
-	}else if(option==2) {
-		int opcion2  = Integer.parseInt(input("¿Que desea hacer? 1. Agregar Empleado o 2.Eliminar Empleado\n"));
-	    if (opcion2 == 1) {
-	    	agregarEmpleado();
-	    }else if (opcion2 == 2) {
-	    	eliminarEmpleado();
-	    }
+ private void programaAdministradorLocal(AdministradorLocal administradorLocalLogin) throws ParseException {
+		menuAdministradorLocal();
+		int option = Integer.parseInt(input("Ingrese la opcion que desea"));
+		if(option==1) {
+			crearUsuario();
+		}else if(option==2) {
+			int opcion2  = Integer.parseInt(input("¿Que desea hacer? 1. Agregar Empleado o 2.Eliminar Empleado\n"));
+		    if (opcion2 == 1) {
+		    	agregarEmpleado();
+		    }else if (opcion2 == 2) {
+		    	eliminarEmpleado();
+		    }
+		}
 	}
-}
  
  
  private void eliminarEmpleado() {
@@ -476,9 +478,9 @@ private void agregarEmpleado() {
 	   System.out.println("Empleado Agregado exitosamente \n");
 }
 
-private void crearUsuario() {
+private void crearUsuario() throws ParseException {
 	 
-	   System.out.println("\n*******CREACION DE USUARIO****************\n");
+	System.out.println("\n*******CREACION DE USUARIO****************\n");
 	   System.out.println("Por favor llene el formulario: \n");
 	   
 	   String nombre = input("Nombre: ");
@@ -488,8 +490,15 @@ private void crearUsuario() {
 	   String usuario = input("Digite el nombre de usuario: ");
 	   String contraseña = input("Digite su contraseña ¡NO OLVIDAR!: ");
 	   
+	   int numeroLicencia = Integer.parseInt(input("Ingrese el numero de Licencia:"));
+	   String paisExpe = input("Ingrese pais de expedición: ");
+	   String Fecvenci = input("Fecha de venciomiento del documento: ");
 	   
-	   Cliente cliente = new Cliente(nombre, nacionalidad, telefono, fechaNac,usuario, contraseña, "Cliente", null);
+	   SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	   Date fechau =format.parse(Fecvenci);
+	   
+	   LicienciaConducion Lice = new LicienciaConducion(numeroLicencia, paisExpe, fechau );
+	   Cliente cliente = new Cliente(nombre, nacionalidad, telefono, fechaNac,usuario, contraseña, "Cliente", null, Lice);
 	   listaClientes.add(cliente);
 	   
 	   System.out.println("Cliente Agregado Exitosamente \n");
@@ -512,7 +521,7 @@ public static void main(String[] args) throws ParseException {
 		}
 	} return null;
  }
- private void cargaDatos(ControllerCarga control) {
+ private void cargaDatos(ControllerCarga control) throws ParseException {
 	  
 	 listaClientes = control.cargarClientes("./data/clientes.txt\\");
 	 listaEmpleados = control.cargarEmpleados("./data/empleados.txt\\");
@@ -524,8 +533,45 @@ public static void main(String[] args) throws ParseException {
 	 listaUsuarioGenericos = control.cargaUsuarios(listaEmpleados, listaClientes, listaAdministradorLocal, administradorGeneral);
      }
  
- 
- 
+ public String crearTextoReservas()
+ {
+ 	String linea = "";
+ 	for(Reserva reserva: reservas)
+ 	{
+ 		linea += reserva.getIdentificador()+";";
+ 		linea += reserva.getCategoriaVehiculo()+";";
+ 		linea += reserva.getFechaInicio()+";";
+ 		linea += reserva.getFechaFinal()+";";
+ 		linea += reserva.getPrecio30()+";";
+ 		linea += reserva.getPrecioRestante()+";";
+ 		linea += reserva.getPrecioTotal()+";";
+ 		linea += reserva.getNumeroTarjeta()+";";
+ 		linea += reserva.getSedeNombreRecoger()+";";
+ 		linea += reserva.getSedeNombreDevolver()+";";
+ 		linea += reserva.getConductorAdicional().getLicenciaConducion().getNumeroLicencia()+";";
+ 		linea += reserva.getConductorAdicional().getLicenciaConducion().getPaisExpedicion()+";";
+ 		linea += reserva.getConductorAdicional().getLicenciaConducion().getFechaVencimiento()+";";
+ 		linea += reserva.getVehiculoRecogido()+";";
+ 		linea += reserva.getIdVehiculo()+";";
+ 		linea += reserva.getNombrePersona()+";";
+ 	}
+ 	return linea;
+ }
+ public void guardarReservas() {
+     try {
+     	String nombreArchivo = "./data/persistencia/" + "reservas.txt";    
+         BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo));
+         writer.write(crearTextoReservas());
+         writer.close();
+         System.out.println("Se ha guardado el archivo de reservas en: " + nombreArchivo);
+     } catch (IOException e) {
+         System.err.println("Error al guardar el archivo.");
+         e.printStackTrace();
+     }
+ } 
+ public ArrayList<Vehiculo> darListaVehiculo(){
+	 return listaVehiculo;
+ }
  
  
  

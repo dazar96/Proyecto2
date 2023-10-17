@@ -8,5 +8,7 @@ public class ConductorAdicional {
 	public ConductorAdicional(LicienciaConducion licienciaConducion) {
 		this.licienciaConducion = licienciaConducion;
 	}
-	
+	public LicienciaConducion getLicenciaConducion() {
+		return licienciaConducion;
+	}
 }
