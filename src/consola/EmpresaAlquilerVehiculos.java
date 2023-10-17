@@ -2,6 +2,8 @@ package consola;
 
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.invoke.StringConcatFactory;
@@ -577,4 +579,43 @@ public String input(String mensaje)
 		}
 		return null;
 	}
+
+public String crearTextoReservas()
+{
+	String linea = "";
+	for(Reserva reserva: reservas)
+	{
+		linea += reserva.getIdentificador()+";";
+		linea += reserva.getCategoriaVehiculo()+";";
+		linea += reserva.getFechaInicio()+";";
+		linea += reserva.getFechaFinal()+";";
+		linea += reserva.getPrecio30()+";";
+		linea += reserva.getPrecioRestante()+";";
+		linea += reserva.getPrecioTotal()+";";
+		linea += reserva.getNumeroTarjeta()+";";
+		linea += reserva.getSedeNombreRecoger()+";";
+		linea += reserva.getSedeNombreDevolver()+";";
+		linea += reserva.getConductorAdicional().getLicenciaConducion().getNumeroLicencia()+";";
+		linea += reserva.getConductorAdicional().getLicenciaConducion().getPaisExpedicion()+";";
+		linea += reserva.getConductorAdicional().getLicenciaConducion().getFechaVencimiento()+";";
+		linea += reserva.getVehiculoRecogido()+";";
+		linea += reserva.getIdVehiculo()+";";
+		linea += reserva.getNombrePersona()+";";
+	}
+	return linea;
+}
+public void guardarReservas() {
+    try {
+    	String nombreArchivo = "./data/persistencia/" + "reservas.txt";    
+        BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo));
+        writer.write(crearTextoReservas());
+        writer.close();
+        System.out.println("Se ha guardado el archivo de reservas en: " + nombreArchivo);
+    } catch (IOException e) {
+        System.err.println("Error al guardar el archivo.");
+        e.printStackTrace();
+    }
+}
+
+
 }

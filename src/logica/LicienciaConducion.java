@@ -14,4 +14,16 @@ public class LicienciaConducion {
 	this.fechaVencimiento = fechaVencimientoLicencia;
  }
  
+ public int getNumeroLicencia() {
+	 return number;
+ }
+ 
+ public String getPaisExpedicion() {
+	 return paisExpedicion;
+ }
+ 
+ public Date getFechaVencimiento()
+ {
+	 return fechaVencimiento;
+ }
 }

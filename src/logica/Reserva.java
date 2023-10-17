@@ -19,6 +19,7 @@ public class Reserva {
 	private ConductorAdicional conductorAdicional;
 	private boolean  vehiculoRecogido;
 	private Vehiculo vehiculo;
+	private int idVehiculo;
 	
 	public Reserva(Integer identificador, String categoriaVehiculo, Date fechaInicio, Date fechaFinal, double precio30,
 			double precioRestante,double precioTotal,int numeroTarjeta,
@@ -38,6 +39,7 @@ public class Reserva {
 		this.conductorAdicional=conductorAdicional;
 		this.vehiculoRecogido = vehiculoRecogido;
 		this.vehiculo = vehiculo;
+		setIdentificadorVehiculo();
 	}
 
 	public Integer getIdentificador() {
@@ -92,13 +94,24 @@ public class Reserva {
 		return numeroTarjeta;
 	}
 	
+
+	public ConductorAdicional getConductorAdicional(){
+		return conductorAdicional;
+	}
 	
+	public boolean getVehiculoRecogido() {
+		return vehiculoRecogido;
+	}
 	
+	public void setIdentificadorVehiculo()
+	{
+		this.vehiculo.getIdVehiculo();
+	}
 	
+	public int getIdVehiculo() {
+		return idVehiculo;
+	}
 	
-	
-	
-	
-	
-	
-}
+	public String getNombrePersona() {
+		return nombrePersona;}
+	}
