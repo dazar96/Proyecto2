@@ -117,6 +117,9 @@ public class Vehiculo {
 	public void setAlquilado (boolean alquilado) {
 		this.alquilado = alquilado;
 	}
+	public boolean isFuncional() {
+		return funcional;
+	}
 	
 	
 	

@@ -1,15 +1,16 @@
 package logica;
 
 import java.text.ParseException;
-
 import java.util.ArrayList;
 import java.util.Date;
-
 public class ControladorReserva {
 	
 	
 	//Verificar datos ingresados por el usuario
 	public Vehiculo ReservaVehiculo(String categoria , ArrayList<CategoriaVehiculo> categoriaVehiculo , String nombreSede ,Date fechaInicio,Date fechaFinal ,ArrayList<Sede> listaSedes) throws ParseException{
+		
+		
+		
 		boolean encontrado = false;
 		 for (CategoriaVehiculo  categorias :categoriaVehiculo) {
 			 if(categoria.equalsIgnoreCase(categorias.getNombreCategoria())) {
@@ -25,18 +26,27 @@ public class ControladorReserva {
 			  				return null;
 		                for	(int i =0; i<sede.getInventarioVehiculos().size();i++)	{
 		                	 Vehiculo coche = sede.getInventarioVehiculos().get(i);              
-						if((coche.getCategoria().getNombreCategoria().equals(categoria))) 
-							if( coche.getFechaInicio() == null ) {
+						if((coche.getCategoria().getNombreCategoria().equals(categoria)&& coche.getAlquilado()==false && coche.isFuncional() )) {
+							
+							
+						
+							
+							
+							if( coche.getFechaInicio() == null  ) {
 								coche.setFechaInicio(fechaInicio); // Falta añadir que tampoco esten en mantenimiento o lavandose
 								coche.setFechaFinal(fechaFinal);
 								return coche;
 							}
-							else if( fechaInicio.after(coche.getFechaFinal())){
-								coche.setFechaInicio(fechaInicio);
-								coche.setFechaFinal(fechaFinal);
-								return coche;
+						
+							else if( fechaInicio.after(coche.getFechaFinal())||fechaFinal.before(coche.getFechaInicio())){
+								
+									coche.setFechaInicio(fechaInicio);
+									coche.setFechaFinal(fechaFinal);
+									return coche;
+								
+								
 							}
-							
+						}	
 		 				
 					}
 		 }else {
@@ -99,5 +109,68 @@ public class ControladorReserva {
 			}
 		}return sedeABuscarSede;
 	}
+	}
+	/*
+	private int numeroDiaAtencionSede(String fecha,int posicion) {
+		String[] partes = fecha.split("/");
+		if (partes.length == 2) {
+            String dias = partes[0];
+            String horas = partes[1];
+            String[] diasArray = dias.split("-");
+            String[] horasArray = horas.split("-");
+            if (diasArray.length == 2 && horasArray.length == 2) {
+            	 String dia = diasArray[posicion];
+            Integer	numero= obtenerNumeroDiaSemana(dia);
+            return numero;
+            }
+		}
+		return 0;
+	}
 	
+	private Date horaAtencion(String fecha,int posicion) {
+		String[] partes = fecha.split("/");
+		if (partes.length == 2) {
+            String dias = partes[0];
+            String horas = partes[1];
+            String[] diasArray = dias.split("-");
+            String[] horasArray = horas.split("-");
+            if (diasArray.length == 2 && horasArray.length == 2) {
+                String Hora = horasArray[posicion];
+                Date horas1 = convertirHoraADate(Hora);
+                return horas1;
+            }
+		}return null;
+	}
+	
+	private Integer obtenerNumeroDiaSemana(String nombreDia) {
+	    switch (nombreDia.toLowerCase()) {
+	        case "domingo":
+	            return Calendar.SUNDAY;
+	        case "lunes":
+	            return Calendar.MONDAY;
+	        case "martes":
+	            return Calendar.TUESDAY;
+	        case "miércoles":
+	            return Calendar.WEDNESDAY;
+	        case "jueves":
+	            return Calendar.THURSDAY;
+	        case "viernes":
+	            return Calendar.FRIDAY;
+	        case "sábado":
+	            return Calendar.SATURDAY;
+	        default:
+	            return null;
+	    }
+	}
+	
+	public static Date convertirHoraADate(String hora) {
+        try {
+            SimpleDateFormat formatoHora = new SimpleDateFormat("hha");
+            return formatoHora.parse(hora);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
+*/
