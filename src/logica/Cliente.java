@@ -15,7 +15,7 @@ public  class Cliente extends UsuarioGenerico {
  private  MedioDePago medioDePago;
  protected  ArrayList<Reserva>  reservas = new ArrayList<Reserva>();
  
- public Cliente(String nombre, String nacionalidad, String telefono, String fechaNacimiento,String usuario, String contraseña, String tipoUsuario,ArrayList<Reserva> reservas)
+ public Cliente(String nombre, String nacionalidad, String telefono, String fechaNacimiento,String usuario, String contraseña, String tipoUsuario,ArrayList<Reserva> reservas,LicienciaConducion licencia)
 	{
 	  super(usuario, contraseña, tipoUsuario);
 		this.nombre = nombre;
@@ -23,7 +23,7 @@ public  class Cliente extends UsuarioGenerico {
 		this.telefono = telefono;
 		this.fechaNac = fechaNacimiento;
 		this.reservas = reservas;
-		
+		this.licienciaConducion = licencia;
 		
 		
 	}

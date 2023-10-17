@@ -4,13 +4,17 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import logica.AdministradorGeneral;
 import logica.AdministradorLocal;
 import logica.CategoriaVehiculo;
 import logica.Cliente;
 import logica.Empleado;
+import logica.LicienciaConducion;
 import logica.Sede;
 import logica.Tarifario;
 import logica.UsuarioGenerico;
@@ -92,7 +96,7 @@ public class ControllerCarga {
 		return admiGeneral;
 	}
 	
-	public ArrayList<Cliente> cargarClientes(String archivoClientes) 
+	public ArrayList<Cliente> cargarClientes(String archivoClientes) throws ParseException 
     {
 		FileReader archivo;
 		BufferedReader lector;
@@ -113,8 +117,16 @@ public class ControllerCarga {
 				String usuario = partes[4];
 				String contraseña = partes[5];
 				String tipoUsuario = partes[6];
+				int numeroLicencia = Integer.parseInt(partes[7]);
+				String paisExpedicion = partes[8];
+				String fechaVencimientoLicencia = partes[9];
 				
-				Cliente perCliente = new Cliente(nombre, nacionalidad, telefono, fechaNacimiento, usuario, contraseña, tipoUsuario,null);
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		        Date fechau =format.parse(fechaVencimientoLicencia);
+				
+				LicienciaConducion licencia = new LicienciaConducion(numeroLicencia,paisExpedicion, fechau);
+				
+				Cliente perCliente = new Cliente(nombre, nacionalidad, telefono, fechaNacimiento, usuario, contraseña, tipoUsuario,null,licencia);
 				clientes.add(perCliente);
 			}
 		}
@@ -130,6 +142,7 @@ public class ControllerCarga {
 		return clientes;
 	}
 
+	
 	public ArrayList<Empleado> cargarEmpleados(String archivoEmpleados)
     {
 		FileReader archivo;
@@ -306,9 +319,9 @@ public class ControllerCarga {
 				String[ ] partes = cadena.split(";");
 				String categoria = partes[0] ;
 				Double tarifaDia = Double.parseDouble(partes[1]);
-				Double aumentoTemporada = Double.parseDouble(partes[1]);
-				Double valorExtraSede = Double.parseDouble(partes[1]);
-				Double valorExtra2conduc = Double.parseDouble(partes[1]);
+				Double aumentoTemporada = Double.parseDouble(partes[2]);
+				Double valorExtraSede = Double.parseDouble(partes[3]);
+				Double valorExtra2conduc = Double.parseDouble(partes[4]);
 				
 				Tarifario tarifario = new Tarifario(aumentoTemporada,valorExtraSede,valorExtra2conduc);
 				CategoriaVehiculo categoriavehiculo = new CategoriaVehiculo( categoria, tarifaDia,tarifario);
